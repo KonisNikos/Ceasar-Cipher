@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 from sys import platform
-from gui.geometry import GeometryBuilder
-from gui import styles
+
+from src.gui.geometry import GeometryBuilder
+from src.gui import screen
+from src.gui import styles
 
 class AppWindow(tk.Tk):
     def __init__(self):
@@ -14,7 +16,9 @@ class AppWindow(tk.Tk):
         super().__init__()
         styles.setup()
         self.title("Hello World")
-        geometry_string = GeometryBuilder(self).center().build()
+        
+        screen_dimentions = screen.get_screen_dimentions(self)
+        geometry_string = GeometryBuilder(screen_dimentions).center().build()
         self.geometry(geometry_string)
 
         self.configure(bg = styles.BACKGROUND_COLOR)

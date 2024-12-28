@@ -1,4 +1,5 @@
-from gui import styles
+from src.gui import styles
+from sys import platform
 
 class Vector():
     def __init__(self, x, y):
@@ -31,12 +32,11 @@ class Vector():
 
     def __sub__(self, other):
         return self + (-1) * other
-
 class GeometryBuilder():
-    def __init__(self, screen):
+    def __init__(self, screen_dimentions):
         width, height = styles.DEFAULT_RESOLUTION
         self._shape = Vector(width, height)
-        self._screen = screen
+        self._screen_dimentions = screen_dimentions
         self._position = Vector(0, 0)
 
 
@@ -51,10 +51,8 @@ class GeometryBuilder():
 
 
     def center(self):
-        screen_width = self._screen.winfo_screenwidth()
-        screen_height = self._screen.winfo_screenheight()
-        screen_vector = Vector(screen_width, screen_height)
-        center_position = screen_vector // 2 - self._shape // 2
+        #TODO account for title_bar height
+        center_position = self._screen_dimentions // 2 - self._shape // 2 
         self._position = center_position
         return self
 
