@@ -1,6 +1,6 @@
 import unittest
 from src.gui.geometry import GeometryBuilder, Vector
-import random 
+
 class TestGeometry(unittest.TestCase):
     def test_builder(self):
         screen = Vector(1000, 1000)

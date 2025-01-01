@@ -1,5 +1,4 @@
 from src.gui import styles
-from sys import platform
 
 class Vector():
     def __init__(self, x, y):

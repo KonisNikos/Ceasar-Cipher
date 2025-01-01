@@ -1,7 +1,7 @@
-from src.gui.geometry import Vector
 from sys import platform
 import ctypes
 from ctypes import wintypes
+from src.gui.geometry import Vector
 def get_screen_dimentions(window):
     if platform != "win32":
         #If the os is not windows it assumes that no menu bar exists
