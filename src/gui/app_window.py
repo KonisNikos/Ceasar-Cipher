@@ -86,7 +86,7 @@ class AppWindow(tk.Tk):
 
 
     def get_key(self):
-        return self.key_entry.get("1.0", "end-1c")
+        return self.key_entry.get()
 
 
     def display_encoded_input(self):
