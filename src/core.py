@@ -56,23 +56,23 @@ def encode(plain_text: str, key: int):
 
         if ToggleCustom:
             if i in cha_dict:
-                cipher_text += characters[(cha_dict[i] - key) % len(characters)]
+                cipher_text += characters[(cha_dict[i] + key) % len(characters)]
             else:
                 cipher_text += i
             continue
 
         elif ToggleEnglish and i in alpha:
-            cipher_text += alpha[(abc_dict[i] - key) % 26]
+            cipher_text += alpha[(abc_dict[i] + key) % 26]
         elif ToggleEnglish and i in ALPHA:
-            cipher_text += ALPHA[(ABC_dict[i] - key) % 26]
+            cipher_text += ALPHA[(ABC_dict[i] + key) % 26]
 
         elif ToggleGreek and i in αβγ_dict:
-            cipher_text += αλφα[(αβγ_dict[i] - key) % 24]
+            cipher_text += αλφα[(αβγ_dict[i] + key) % 24]
         elif ToggleGreek and i in ΑΒΓ_dict:
-            cipher_text += ΑΛΦΑ[(ΑΒΓ_dict[i] - key) % 24]
+            cipher_text += ΑΛΦΑ[(ΑΒΓ_dict[i] + key) % 24]
         
         elif ToggleSymbols and i in syms:
-            cipher_text += syms[(sym_dict[i] - key) % 43]
+            cipher_text += syms[(sym_dict[i] + key) % 43]
         
         else:
             cipher_text += i
