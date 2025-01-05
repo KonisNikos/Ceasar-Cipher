@@ -35,7 +35,7 @@ def encode(plain_text: str, key: int, English: bool, Greek: bool, Symbols: bool,
         raise TypeError(f"Expected an int, got {type(key).__name__}")
     for i in (English, Greek, Symbols, Custom):
         if not isinstance(i, bool):
-            raise TypeError(f"Expected an int, got {type(i).__name__}")
+            raise TypeError(f"Expected a bool, got {type(i).__name__}")
     if Custom and not isinstance(characters, str):
         raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
@@ -132,14 +132,15 @@ def QuickSort(Dict: dict, List: list):
 
 
 # TODO: Add a disclaimer when choosing this function stating the below.
-# Only works for english decryption! Use with english or custom ciphers.
+# Only works for decryption of coherent English words! Use with English or Custom ciphers.
+# Results may not be perfect if the text is too short.
 def AutoDecrypt(cipher_text: str, English: bool, Custom: bool, characters: str):
 
     if not isinstance(cipher_text, str):
         raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
     for i in(English, Custom):
         if not isinstance(i, bool):
-            raise TypeError(f"Expected an int, got {type(i).__name__}")
+            raise TypeError(f"Expected a bool, got {type(i).__name__}")
     if Custom and not isinstance(characters, str):
         raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
