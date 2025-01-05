@@ -22,53 +22,60 @@ sym_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3': 
             '&': 15, '7': 16, '*': 17, '8': 18, '(': 19, '9': 20, ')': 21, '0': 22, '_': 23, '-': 24, '+': 25, '=': 26, '{': 27, '[': 28,
             '}': 29, ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
 
+Toggles = {False, False, False, False}
 
 # TODO: Add toggles to the UI for the options: English, Greek, Symbols and Numbers, Custom.
 # TODO: Do not run if no toggle is chosen and show a respective message.
 # TODO: Custom should disable all other toggles (on UI as well).
 # TODO: Ask for unique characters as a string and assign the given string to "characters" below.
-def encode(plain_text: str, key: int, English: bool, Greek: bool, Symbols: bool, Custom: bool, characters: str):
+# TODO: There should be a 'Toggle' list in the format:
+# Toggles = {False, False, False, False} where each respectively represents: English, Greek, Symbols, Custom.
+def encode(plain_text: str, key: int, Toggles: list, characters: str):
 
     if not isinstance(plain_text, str):
         raise TypeError(f"Expected a str, got {type(plain_text).__name__}")
     if not isinstance(key, int):
         raise TypeError(f"Expected an int, got {type(key).__name__}")
-    for i in (English, Greek, Symbols, Custom):
+    if not isinstance(Toggles, list):
+        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
+    if len(Toggles) != 4:
+        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
+    for i in Toggles:
         if not isinstance(i, bool):
             raise TypeError(f"Expected a bool, got {type(i).__name__}")
-    if Custom and not isinstance(characters, str):
-        raise TypeError(f"Expected a str, got {type(characters).__name__}")
+    if Toggles[3]:
+        if not isinstance(characters, str):
+            raise TypeError(f"Expected a str, got {type(characters).__name__}")
+        for i in range(len(characters)):
+            if i < len(characters)-1 and characters[i] in characters[i+1:]:
+                raise ValueError(f"Expected only unique characters, got {characters[i]} multiple times")
 
-    if Custom:
+    if Toggles[3]:
         cha_dict = {}
         for i in range(len(characters)):
-            if i in cha_dict:
-                # TODO: Return an error saying that every character should be unique and showing the problematic character.
-                pass
-                ...
-        cha_dict.setdefault(characters[i], i)
+            cha_dict.setdefault(characters[i], i)
 
     cipher_text = ''
     for i in plain_text:
 
-        if Custom:
-            if i in cha_dict:
+        if Toggles[3]:
+            if i in characters:
                 cipher_text += characters[(cha_dict[i] - key) % len(characters)]
             else:
                 cipher_text += i
             continue
 
-        elif English and i in alpha:
+        elif Toggles[0] and i in alpha:
             cipher_text += alpha[(abc_dict[i] - key) % 26]
-        elif English and i in ALPHA:
+        elif Toggles[0] and i in ALPHA:
             cipher_text += ALPHA[(ABC_dict[i] - key) % 26]
 
-        elif Greek and i in αβγ_dict:
+        elif Toggles[1] and i in αβγ_dict:
             cipher_text += αλφα[(αβγ_dict[i] - key) % 24]
-        elif Greek and i in ΑΒΓ_dict:
+        elif Toggles[1] and i in ΑΒΓ_dict:
             cipher_text += ΑΛΦΑ[(ΑΒΓ_dict[i] - key) % 24]
 
-        elif Symbols and i in syms:
+        elif Toggles[2] and i in syms:
             cipher_text += syms[(sym_dict[i] - key) % 43]
 
         else:
@@ -77,31 +84,39 @@ def encode(plain_text: str, key: int, English: bool, Greek: bool, Symbols: bool,
     return cipher_text
 
 
-def decode(cipher_text: str, key: int, English: bool, Greek: bool, Symbols: bool, Custom: bool, characters: str):
+def decode(cipher_text: str, key: int, Toggles: list, characters: str):
 
-    return encode(cipher_text, -key, English, Greek, Symbols, Custom, characters)
+    return encode(cipher_text, -key, Toggles, characters)
 
 
 # TODO: Add a disclaimer when choosing this function stating the below.
 # Only usable with one toggle on!
-def BruteForce(cipher_text: str, English: bool, Greek: bool, Symbols: bool, Custom: bool, characters: str):
+def BruteForce(cipher_text: str, Toggles: list, characters: str):
 
-    if not isinstance(cipher_text, str):
-        raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
+    if not isinstance(Toggles, list):
+        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
+    if len(Toggles) != 4:
+        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
+    for i in (Toggles):
+        if not isinstance(i, bool):
+            raise TypeError(f"Expected a bool, got {type(i).__name__}")
+    if Toggles[3] and not isinstance(characters, str):
+        raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
-    if English:
+    if Toggles[0]:
         max = 26
-    elif Greek:
+    elif Toggles[1]:
         max = 24
-    elif Symbols:
+    elif Toggles[2]:
         max = 43    
-    elif Custom:
+    elif Toggles[3]:
         max = len(characters)
 
-    Dict = {}
+    PossibleDecryptions = {}
     for key in range(max):
-        Dict.setdefault(decode(cipher_text, key, English, Greek, Symbols, Custom, characters), key)
-    return Dict
+        PossibleDecryptions.setdefault(decode(cipher_text, key, Toggles, characters), key)
+
+    return PossibleDecryptions
 
 
 # The following N-grams are the most common, taken from their respective wikipedia page (if it exists)
@@ -128,33 +143,38 @@ def QuickSort(Dict: dict, List: list):
 
     Left = QuickSort(Dict, List[:i])
     Right = QuickSort(Dict, List[i+1:])
+
     return Left + [List[i]] + Right
 
 
 # TODO: Add a disclaimer when choosing this function stating the below.
 # Only works for decryption of coherent English words! Use with English or Custom ciphers.
 # Results may not be perfect if the text is too short.
-def AutoDecrypt(cipher_text: str, English: bool, Custom: bool, characters: str):
+# May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (e.g. French, German, Spanish, ...)
+def AutoDecrypt(cipher_text: str, Toggles: list, characters: str):
 
-    if not isinstance(cipher_text, str):
-        raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
-    for i in(English, Custom):
+    if not isinstance(Toggles, list):
+        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
+    if len(Toggles) != 4:
+        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
+    for i in (Toggles[0], Toggles[3]):
         if not isinstance(i, bool):
             raise TypeError(f"Expected a bool, got {type(i).__name__}")
-    if Custom and not isinstance(characters, str):
-        raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
-    Dict = BruteForce(cipher_text, English, False, False, Custom, characters)
+
+    EngToggles = [Toggles[0], False, False, Toggles[3]]
+    PossibleDecryptions = BruteForce(cipher_text, EngToggles, characters)
     DecryptionScores = {}
 
-    for decrypted_message in Dict:
-        key = Dict[decrypted_message]
+    for decrypted_message in PossibleDecryptions:
+        key = PossibleDecryptions[decrypted_message]
         points = 0
 
         modified_message = ''
         for i in decrypted_message:
             if i in ALPHA:
                 modified_message += alpha[ABC_dict[i]]
+                points -= 1
             else:
                 modified_message += i
 
@@ -162,7 +182,7 @@ def AutoDecrypt(cipher_text: str, English: bool, Custom: bool, characters: str):
             Ngrams = [Bigrams, Trigrams, Quadrigrams][i-1]
             for j in range(len(modified_message)-i):
                 if modified_message[j: j+i+1] in Ngrams:
-                    points += Ngrams[modified_message[j: j+i+1]]
+                    points += 100 * Ngrams[modified_message[j: j+i+1]]
 
         string = ''
         if key < 10: string = '0'
