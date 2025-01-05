@@ -1,12 +1,3 @@
-# TODO: Add toggles to the UI for the options below (English, Greek, Symbols and Numbers, Custom).
-# TODO: Do not run if none is chosen and show a respective message.
-ToggleEnglish = True
-ToggleGreek = True
-ToggleSymbols = True
-# TODO: ToggleCustom should disable all other toggles (on UI as well).
-ToggleCustom = False
-
-
 alpha = 'abcdefghijklmnopqrstuvwxyz'
 abc_dict = {'a': 0 , 'b': 1 , 'c': 2 , 'd': 3 , 'e': 4 , 'f': 5 , 'g': 6 , 'h': 7 , 'i': 8 ,
             'j': 9 , 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17,
@@ -32,47 +23,52 @@ sym_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3': 
             '}': 29, ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
 
 
-
+# TODO: Add toggles to the UI for the options: English, Greek, Symbols and Numbers, Custom.
+# TODO: Do not run if no toggle is chosen and show a respective message.
+# TODO: Custom should disable all other toggles (on UI as well).
 # TODO: Ask for unique characters as a string and assign the given string to "characters" below.
-if ToggleCustom:
-    characters = ...
-    cha_dict = {}
-    for i in range(len(characters)):
-        if i in cha_dict:
-            # TODO: Return an error saying that every character should be unique and showing the problematic character.
-            pass
-            ...
-        cha_dict.setdefault(characters[i], i)
-
-
-def encode(plain_text: str, key: int):
+def encode(plain_text: str, key: int, English: bool, Greek: bool, Symbols: bool, Custom: bool, characters: str):
 
     if not isinstance(plain_text, str):
         raise TypeError(f"Expected a str, got {type(plain_text).__name__}")
     if not isinstance(key, int):
         raise TypeError(f"Expected an int, got {type(key).__name__}")
+    for i in (English, Greek, Symbols, Custom):
+        if not isinstance(i, bool):
+            raise TypeError(f"Expected an int, got {type(i).__name__}")
+    if Custom and not isinstance(characters, str):
+        raise TypeError(f"Expected a str, got {type(characters).__name__}")
+
+    if Custom:
+        cha_dict = {}
+        for i in range(len(characters)):
+            if i in cha_dict:
+                # TODO: Return an error saying that every character should be unique and showing the problematic character.
+                pass
+                ...
+        cha_dict.setdefault(characters[i], i)
 
     cipher_text = ''
     for i in plain_text:
 
-        if ToggleCustom:
+        if Custom:
             if i in cha_dict:
                 cipher_text += characters[(cha_dict[i] - key) % len(characters)]
             else:
                 cipher_text += i
             continue
 
-        elif ToggleEnglish and i in alpha:
+        elif English and i in alpha:
             cipher_text += alpha[(abc_dict[i] - key) % 26]
-        elif ToggleEnglish and i in ALPHA:
+        elif English and i in ALPHA:
             cipher_text += ALPHA[(ABC_dict[i] - key) % 26]
 
-        elif ToggleGreek and i in αβγ_dict:
+        elif Greek and i in αβγ_dict:
             cipher_text += αλφα[(αβγ_dict[i] - key) % 24]
-        elif ToggleGreek and i in ΑΒΓ_dict:
+        elif Greek and i in ΑΒΓ_dict:
             cipher_text += ΑΛΦΑ[(ΑΒΓ_dict[i] - key) % 24]
 
-        elif ToggleSymbols and i in syms:
+        elif Symbols and i in syms:
             cipher_text += syms[(sym_dict[i] - key) % 43]
 
         else:
@@ -81,30 +77,30 @@ def encode(plain_text: str, key: int):
     return cipher_text
 
 
-def decode(cipher_text: str, key: int):
+def decode(cipher_text: str, key: int, English: bool, Greek: bool, Symbols: bool, Custom: bool, characters: str):
 
-    return encode(cipher_text, -key)
+    return encode(cipher_text, -key, English, Greek, Symbols, Custom, characters)
 
 
 # TODO: Add a disclaimer when choosing this function stating the below.
 # Only usable with one toggle on!
-def BruteForce(cipher_text: str):
+def BruteForce(cipher_text: str, English: bool, Greek: bool, Symbols: bool, Custom: bool, characters: str):
 
     if not isinstance(cipher_text, str):
         raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
 
-    if ToggleEnglish:
+    if English:
         max = 26
-    elif ToggleGreek:
+    elif Greek:
         max = 24
-    elif ToggleSymbols:
+    elif Symbols:
         max = 43    
-    elif ToggleCustom:
+    elif Custom:
         max = len(characters)
 
     Dict = {}
     for key in range(max):
-        Dict.setdefault(decode(cipher_text, key), key)
+        Dict.setdefault(decode(cipher_text, key, English, Greek, Symbols, Custom, characters), key)
     return Dict
 
 
@@ -137,12 +133,17 @@ def QuickSort(Dict: dict, List: list):
 
 # TODO: Add a disclaimer when choosing this function stating the below.
 # Only works for english decryption! Use with english or custom ciphers.
-def AutoDecrypt(cipher_text: str):
+def AutoDecrypt(cipher_text: str, English: bool, Custom: bool, characters: str):
 
     if not isinstance(cipher_text, str):
         raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
+    for i in(English, Custom):
+        if not isinstance(i, bool):
+            raise TypeError(f"Expected an int, got {type(i).__name__}")
+    if Custom and not isinstance(characters, str):
+        raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
-    Dict = BruteForce(cipher_text)
+    Dict = BruteForce(cipher_text, English, False, False, Custom, characters)
     DecryptionScores = {}
 
     for decrypted_message in Dict:
