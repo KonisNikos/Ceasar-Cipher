@@ -100,17 +100,8 @@ def decode(cipher_text: str, key: int, character_sets):
 
 
 def BruteForce(cipher_text: str, character_sets: list[str]):
-
-    if not isinstance(Toggles, list):
-        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
-    if len(Toggles) != 4:
-        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
-    for i in (Toggles):
-        if not isinstance(i, bool):
-            raise TypeError(f"Expected a bool, got {type(i).__name__}")
-    if Toggles[3] and not isinstance(characters, str):
-        raise TypeError(f"Expected a str, got {type(characters).__name__}")
-
+    if not isinstance(cipher_text, str):
+        raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
     character_set_length = len(character_sets[0])
 
     result = {}
@@ -157,7 +148,7 @@ def AutoDecrypt(cipher_text: str):
         raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
 
     english_set = CharacterSetBuilder().add(Language.ENGLISH).build()
-    Dict = BruteForce(cipher_text, english_set) 
+    PossibleDecryptions = BruteForce(cipher_text, english_set) 
     DecryptionScores = {}
 
     for decrypted_message in PossibleDecryptions:
