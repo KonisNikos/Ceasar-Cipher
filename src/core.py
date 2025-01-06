@@ -101,8 +101,15 @@ def decode(cipher_text: str, key: int, character_sets):
 
 def BruteForce(cipher_text: str, character_sets: list[str]):
 
-    if not isinstance(cipher_text, str):
-        raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
+    if not isinstance(Toggles, list):
+        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
+    if len(Toggles) != 4:
+        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
+    for i in (Toggles):
+        if not isinstance(i, bool):
+            raise TypeError(f"Expected a bool, got {type(i).__name__}")
+    if Toggles[3] and not isinstance(characters, str):
+        raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
     character_set_length = len(character_sets[0])
 
@@ -137,6 +144,7 @@ def QuickSort(Dict: dict, List: list):
 
     Left = QuickSort(Dict, List[:i])
     Right = QuickSort(Dict, List[i+1:])
+
     return Left + [List[i]] + Right
 
 
@@ -152,8 +160,8 @@ def AutoDecrypt(cipher_text: str):
     Dict = BruteForce(cipher_text, english_set) 
     DecryptionScores = {}
 
-    for decrypted_message in Dict:
-        key = Dict[decrypted_message]
+    for decrypted_message in PossibleDecryptions:
+        key = PossibleDecryptions[decrypted_message]
         points = 0
 
         modified_message = decrypted_message.lower()
@@ -162,7 +170,7 @@ def AutoDecrypt(cipher_text: str):
             Ngrams = [Bigrams, Trigrams, Quadrigrams][i-1]
             for j in range(len(modified_message)-i):
                 if modified_message[j: j+i+1] in Ngrams:
-                    points += Ngrams[modified_message[j: j+i+1]]
+                    points += 100 * Ngrams[modified_message[j: j+i+1]]
 
         string = ''
         if key < 10: string = '0'
