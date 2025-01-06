@@ -1,114 +1,122 @@
-from enum import Enum
-from sys import intern
+alpha = 'abcdefghijklmnopqrstuvwxyz'
+abc_dict = {'a': 0 , 'b': 1 , 'c': 2 , 'd': 3 , 'e': 4 , 'f': 5 , 'g': 6 , 'h': 7 , 'i': 8 ,
+            'j': 9 , 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17,
+            's': 18, 't': 19, 'u': 20, 'v': 21, 'w': 22, 'x': 23, 'y': 24, 'z': 25}
+ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+ABC_dict = {'A': 0 , 'B': 1 , 'C': 2 , 'D': 3 , 'E': 4 , 'F': 5 , 'G': 6 , 'H': 7 , 'I': 8 ,
+            'J': 9 , 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15, 'Q': 16, 'R': 17,
+            'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23, 'Y': 24, 'Z': 25}
 
+αλφα = 'αβγδεζηθικλμνξοπρστυφχψω'
+αβγ_dict = {'α': 0 , 'β': 1 , 'γ': 2 , 'δ': 3 , 'ε': 4 , 'ζ': 5 , 'η': 6 , 'θ': 7 , 'ι': 8 , 'κ': 9 , 'λ': 10, 'μ': 11,
+            'ν': 12, 'ξ': 13, 'ο': 14, 'π': 15, 'ρ': 16, 'σ': 17, 'τ': 18, 'υ': 19, 'φ': 20, 'χ': 21, 'ψ': 22, 'ω': 23,
+            'ά': 0 , 'έ': 4 , 'ή': 6 , 'ί': 8 , 'ϊ': 8 , 'ΐ': 8 , 'ό': 14, 'ς': 17, 'ύ': 19, 'ϋ': 19, 'ΰ': 19, 'ώ': 23}
+ΑΛΦΑ = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
+ΑΒΓ_dict = {'Α': 0 , 'Β': 1 , 'Γ': 2 , 'Δ': 3 , 'Ε': 4 , 'Ζ': 5 , 'Η': 6 , 'Θ': 7 , 'Ι': 8 , 'Κ': 9 , 'Λ': 10,
+            'Μ': 11, 'Ν': 12, 'Ξ': 13, 'Ο': 14, 'Π': 15, 'Ρ': 16, 'Σ': 17, 'Τ': 18, 'Υ': 19, 'Φ': 20, 'Χ': 21,
+            'Ψ': 22, 'Ω': 23, 'Ά': 0 , 'Έ': 4 , 'Ή': 6 , 'Ί': 8 , 'Ϊ': 8 , 'Ό': 14, 'Ύ': 19, 'Ϋ': 19, 'Ώ': 23}
 
-class Language(Enum):
-    ENGLISH = 1      
-    GREEK = 2
-    SYMBOLS = 3
-
-CHARACTER_SETS = {
-    Language.ENGLISH: [
-        intern("abcdefghijklmnopqrstuvwxyz"),
-        intern("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    ],
-    Language.GREEK: [
-        intern("αβγδεζηθικλμνξοπρστυφχψω"),
-        intern("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ")
-    ],
 # TODO: Add a preview of the syms string below to show which and how the characters will rotate.
-    Language.SYMBOLS: [
-        intern('''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/''')
-    ]
-}
-class CharacterSetBuilder():
-    def __init__(self): 
-        self.custom = False
-        self.character_sets = []
-        self.used_languages = []
+syms = '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ '''
+sym_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3': 7 , '$': 8 , '4': 9, '€': 10, '%': 11, '5': 12, '^': 13, '6': 14,
+            '&': 15, '7': 16, '*': 17, '8': 18, '(': 19, '9': 20, ')': 21, '0': 22, '_': 23, '-': 24, '+': 25, '=': 26, '{': 27, '[': 28,
+            '}': 29, ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
 
-
-    def from_list(self, languages: list[Language]):
-        if not isinstance(languages, list[Language]): 
-            languages_type = type(languages).__name__
-            raise TypeError(f"Expected a Languages list, got {languages_type}")
-
-        for language in languages:
-            self.add(language)
-
-        return self
-
-
-    def add(self, language: Language):
-        if not isinstance(language, Language):
-            return TypeError(f"Expected a Language type, got {toggles_list_type}")
-        if language in self.used_languages:
-            raise Exception(f"Can't add the same language a second time")
-
-        self.character_sets += CHARACTER_SETS[language]
-        self.used_languages += [language]
-        return self
-
-
-    def add_all(self):
-        character_sets = []
-        for language in Language:
-            self.add(language)
-        return self
-
-
-    def add_custom(self, custom_text):
-        self.custom = True
-        self.character_sets[0] = custom_text
-        return self
-    
-
-    def build(self):
-        if(self.custom and len(self.used_languages) > 0):
-            raise Exception("You can not add a custom alphabet and the normal one")
-        if(len(self.character_sets) == 0):
-            raise Exception("You need to add at least one character set")
-        return self.character_sets
+Toggles = {False, False, False, False}
 
 # TODO: Add toggles to the UI for the options: English, Greek, Symbols and Numbers, Custom.
-def encode(plain_text: str, key: int, character_sets: list[str]):
+# TODO: Do not run if no toggle is chosen and show a respective message.
+# TODO: Custom should disable all other toggles (on UI as well).
+# TODO: Ask for unique characters as a string and assign the given string to "characters" below.
+# TODO: There should be a 'Toggle' list in the format:
+# Toggles = {False, False, False, False} where each respectively represents: English, Greek, Symbols, Custom.
+def encode(plain_text: str, key: int, Toggles: list, characters: str):
+
     if not isinstance(plain_text, str):
         raise TypeError(f"Expected a str, got {type(plain_text).__name__}")
     if not isinstance(key, int):
         raise TypeError(f"Expected an int, got {type(key).__name__}")
+    if not isinstance(Toggles, list):
+        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
+    if len(Toggles) != 4:
+        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
+    for i in Toggles:
+        if not isinstance(i, bool):
+            raise TypeError(f"Expected a bool, got {type(i).__name__}")
+    if Toggles[3]:
+        if not isinstance(characters, str):
+            raise TypeError(f"Expected a str, got {type(characters).__name__}")
+        for i in range(len(characters)):
+            if i < len(characters)-1 and characters[i] in characters[i+1:]:
+                raise ValueError(f"Expected only unique characters, got {characters[i]} multiple times")
 
-    if len(character_sets) == 0:
-        raise Exception("No character sets were provided")
+    if Toggles[3]:
+        cha_dict = {}
+        for i in range(len(characters)):
+            cha_dict.setdefault(characters[i], i)
 
-    cipher_text = ""
-    for character in plain_text:
-        encrypted_character = character
-        for character_set in character_sets:
-            if(character not in character_set):
-                continue
-            character_index = character_set.index(character)
-            set_length = len(character_set)
-            encrypted_character = character_set[(character_index - key) % set_length]
-            break
-        cipher_text += encrypted_character
+    cipher_text = ''
+    for i in plain_text:
+
+        if Toggles[3]:
+            if i in characters:
+                cipher_text += characters[(cha_dict[i] - key) % len(characters)]
+            else:
+                cipher_text += i
+            continue
+
+        elif Toggles[0] and i in alpha:
+            cipher_text += alpha[(abc_dict[i] - key) % 26]
+        elif Toggles[0] and i in ALPHA:
+            cipher_text += ALPHA[(ABC_dict[i] - key) % 26]
+
+        elif Toggles[1] and i in αβγ_dict:
+            cipher_text += αλφα[(αβγ_dict[i] - key) % 24]
+        elif Toggles[1] and i in ΑΒΓ_dict:
+            cipher_text += ΑΛΦΑ[(ΑΒΓ_dict[i] - key) % 24]
+
+        elif Toggles[2] and i in syms:
+            cipher_text += syms[(sym_dict[i] - key) % 43]
+
+        else:
+            cipher_text += i
 
     return cipher_text
 
 
-def decode(cipher_text: str, key: int, character_sets):
-    return encode(cipher_text, -key, character_sets)
+def decode(cipher_text: str, key: int, Toggles: list, characters: str):
+
+    return encode(cipher_text, -key, Toggles, characters)
 
 
-def BruteForce(cipher_text: str, character_sets: list[str]):
-    if not isinstance(cipher_text, str):
-        raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
-    character_set_length = len(character_sets[0])
+# TODO: Add a disclaimer when choosing this function stating the below.
+# Only usable with one toggle on!
+def BruteForce(cipher_text: str, Toggles: list, characters: str):
 
-    result = {}
-    for key in range(character_set_length):
-        result.setdefault(decode(cipher_text, key, character_sets), key)
+    if not isinstance(Toggles, list):
+        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
+    if len(Toggles) != 4:
+        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
+    for i in (Toggles):
+        if not isinstance(i, bool):
+            raise TypeError(f"Expected a bool, got {type(i).__name__}")
+    if Toggles[3] and not isinstance(characters, str):
+        raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
-    return result 
+    if Toggles[0]:
+        max = 26
+    elif Toggles[1]:
+        max = 24
+    elif Toggles[2]:
+        max = 43    
+    elif Toggles[3]:
+        max = len(characters)
+
+    PossibleDecryptions = {}
+    for key in range(max):
+        PossibleDecryptions.setdefault(decode(cipher_text, key, Toggles, characters), key)
+
+    return PossibleDecryptions
 
 
 # The following N-grams are the most common, taken from their respective wikipedia page (if it exists)
@@ -142,20 +150,33 @@ def QuickSort(Dict: dict, List: list):
 # TODO: Add a disclaimer when choosing this function stating the below.
 # Only works for decryption of coherent English words! Use with English or Custom ciphers.
 # Results may not be perfect if the text is too short.
-def AutoDecrypt(cipher_text: str):
+# May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish, ...)
+def AutoDecrypt(cipher_text: str, Toggles: list, characters: str):
 
-    if not isinstance(cipher_text, str):
-        raise TypeError(f"Expected a str, got {type(cipher_text).__name__}")
+    if not isinstance(Toggles, list):
+        raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
+    if len(Toggles) != 4:
+        raise ValueError(f"Expected 4 items in list, got {len(Toggles)}")
+    for i in (Toggles[0], Toggles[3]):
+        if not isinstance(i, bool):
+            raise TypeError(f"Expected a bool, got {type(i).__name__}")
 
-    english_set = CharacterSetBuilder().add(Language.ENGLISH).build()
-    PossibleDecryptions = BruteForce(cipher_text, english_set) 
+
+    EngToggles = [Toggles[0], False, False, Toggles[3]]
+    PossibleDecryptions = BruteForce(cipher_text, EngToggles, characters)
     DecryptionScores = {}
 
     for decrypted_message in PossibleDecryptions:
         key = PossibleDecryptions[decrypted_message]
         points = 0
 
-        modified_message = decrypted_message.lower()
+        modified_message = ''
+        for i in decrypted_message:
+            if i in ALPHA:
+                modified_message += alpha[ABC_dict[i]]
+                points -= 1
+            else:
+                modified_message += i
 
         for i in range(1, 4):
             Ngrams = [Bigrams, Trigrams, Quadrigrams][i-1]
