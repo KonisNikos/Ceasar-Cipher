@@ -104,16 +104,16 @@ def BruteForce(cipher_text: str, Toggles: list, characters: str):
         raise TypeError(f"Expected a str, got {type(characters).__name__}")
 
     if Toggles[0]:
-        max = 26
+        max_key = 26
     elif Toggles[1]:
-        max = 24
+        max_key = 24
     elif Toggles[2]:
-        max = 43    
+        max_key = 43    
     elif Toggles[3]:
-        max = len(characters)
+        max_key = len(characters)
 
     PossibleDecryptions = {}
-    for key in range(max):
+    for key in range(max_key):
         PossibleDecryptions.setdefault(decode(cipher_text, key, Toggles, characters), key)
 
     return PossibleDecryptions
