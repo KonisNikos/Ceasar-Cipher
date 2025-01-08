@@ -62,7 +62,7 @@ class AppWindow(tk.Tk):
         )
         self.autodecrypt_button = widgets.button(
             self.buttons_frame,
-            text= "AytoDecrypt",
+            text= "AutoDecrypt",
             command = self.display_autodecrypt_input,
             width = 12
         )
@@ -129,10 +129,14 @@ class AppWindow(tk.Tk):
     def display_autodecrypt_input(self):
         input_text=self.get_input()
         from src.core import AutoDecrypt
-        Toggles=[True,True,True,False]
-        decoded_text=AutoDecrypt(input_text,Toggles,"")
+        toggles=[True,True,True,False]
+        decrypted_messages = AutoDecrypt(input_text, toggles).keys()
+
         self.output_text.config(state=tk.NORMAL)  
+
         self.output_text.delete("1.0", tk.END)  
-        self.output_text.insert("1.0", decoded_text)  
+        for decrypted_message in decrypted_messages: 
+            self.output_text.insert(tk.END, decrypted_message)  
+            self.output_text.insert(tk.END,"\n")
+
         self.output_text.config(state=tk.DISABLED)
-        pass
