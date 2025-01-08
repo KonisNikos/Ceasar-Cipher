@@ -50,17 +50,22 @@ class AppWindow(tk.Tk):
         self.buttons_frame = widgets.frame(self)
         self.encode_button = widgets.button(
             self.buttons_frame, 
-            text="encode", 
+            text="Encode", 
             command = self.display_encoded_input,
             width = 8
         ) 
         self.decode_button = widgets.button(
             self.buttons_frame,
-            text = "decode",
+            text = "Decode",
             command = self.display_decoded_input,
             width = 8 
         )
-
+        self.AytoDecryptButton = widgets.button(
+            self.buttons_frame,
+            text= "AytoDecrypt",
+            command = self.display_Aytodecrypt_input,
+            width = 12
+        )
         self.input_frame.pack(side = tk.LEFT)
         self.output_frame.pack(side = tk.RIGHT)
 
@@ -80,6 +85,7 @@ class AppWindow(tk.Tk):
         self.buttons_frame.pack(pady = 15)
         self.encode_button.pack(side = tk.LEFT, padx = 10)
         self.decode_button.pack(side = tk.RIGHT, padx = 10)
+        self.AytoDecryptButton.pack(side = tk.LEFT, padx=10)
 
     def get_input(self):
         return self.input_text.get("1.0", "end-1c")
@@ -103,6 +109,16 @@ class AppWindow(tk.Tk):
         indexing works.
         Hint 4: the encode function is at the core file 
         ''' 
+        key= self.get_key()
+        key=int(key)
+        input_text=self.get_input()
+        from src.core import encode
+        Toggles=[True,True,True,False]
+        encoded_text=encode(input_text,key,Toggles,"")
+        self.output_text.config(state=tk.NORMAL)  
+        self.output_text.delete("1.0", tk.END)  
+        self.output_text.insert("1.0", encoded_text)  
+        self.output_text.config(state=tk.DISABLED)
         pass
 
 
@@ -111,4 +127,25 @@ class AppWindow(tk.Tk):
         Similar concept with the encode funcition maybe 
         create another function to help clear things up
         '''
+        key= self.get_key()
+        key=int(key)
+        input_text=self.get_input()
+        from src.core import decode
+        Toggles=[True,True,True,False]
+        decoded_text=decode(input_text,key,Toggles,"")
+        self.output_text.config(state=tk.NORMAL)  
+        self.output_text.delete("1.0", tk.END)  
+        self.output_text.insert("1.0", decoded_text)  
+        self.output_text.config(state=tk.DISABLED)
         pass 
+
+    def display_Aytodecrypt_input(self):
+        input_text=self.get_input()
+        from src.core import AutoDecrypt
+        Toggles=[True,True,True,False]
+        decoded_text=AutoDecrypt(input_text,Toggles,"")
+        self.output_text.config(state=tk.NORMAL)  
+        self.output_text.delete("1.0", tk.END)  
+        self.output_text.insert("1.0", decoded_text)  
+        self.output_text.config(state=tk.DISABLED)
+        pass
