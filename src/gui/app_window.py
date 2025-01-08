@@ -60,10 +60,10 @@ class AppWindow(tk.Tk):
             command = self.display_decoded_input,
             width = 8 
         )
-        self.AytoDecryptButton = widgets.button(
+        self.autodecrypt_button = widgets.button(
             self.buttons_frame,
             text= "AytoDecrypt",
-            command = self.display_Aytodecrypt_input,
+            command = self.display_autodecrypt_input,
             width = 12
         )
         self.input_frame.pack(side = tk.LEFT)
@@ -85,7 +85,7 @@ class AppWindow(tk.Tk):
         self.buttons_frame.pack(pady = 15)
         self.encode_button.pack(side = tk.LEFT, padx = 10)
         self.decode_button.pack(side = tk.RIGHT, padx = 10)
-        self.AytoDecryptButton.pack(side = tk.LEFT, padx=10)
+        self.autodecrypt_button.pack(side = tk.LEFT, padx=10)
 
     def get_input(self):
         return self.input_text.get("1.0", "end-1c")
@@ -96,19 +96,6 @@ class AppWindow(tk.Tk):
 
 
     def display_encoded_input(self):
-        '''
-        task:
-
-        When this function is called it has to update the self.output_text
-        Its contents should contain the encoded input data 
-        Hint 1: Call self.get_input and self.get_key to get the input and key
-        data 
-        Hint 2: IMPORTANT! You first need to configure the state of the
-        output_text to normal so you can write info to it
-        Hint 3: read https://tkdocs.com/tutorial/text.html to figure how 
-        indexing works.
-        Hint 4: the encode function is at the core file 
-        ''' 
         key= self.get_key()
         key=int(key)
         input_text=self.get_input()
@@ -139,7 +126,7 @@ class AppWindow(tk.Tk):
         self.output_text.config(state=tk.DISABLED)
         pass 
 
-    def display_Aytodecrypt_input(self):
+    def display_autodecrypt_input(self):
         input_text=self.get_input()
         from src.core import AutoDecrypt
         Toggles=[True,True,True,False]
