@@ -110,10 +110,6 @@ class AppWindow(tk.Tk):
 
 
     def display_decoded_input(self):
-        '''
-        Similar concept with the encode funcition maybe 
-        create another function to help clear things up
-        '''
         key= self.get_key()
         key=int(key)
         input_text=self.get_input()
