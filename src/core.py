@@ -30,7 +30,7 @@ Toggles = {False, False, False, False}
 # TODO: Ask for unique characters as a string and assign the given string to "characters" below.
 # TODO: There should be a 'Toggle' list in the format:
 # Toggles = {False, False, False, False} where each respectively represents: English, Greek, Symbols, Custom.
-def encode(plain_text: str, key: int, Toggles: list, characters: str):
+def encode(plain_text: str, key: int, Toggles: list, characters = ''):
 
     if not isinstance(plain_text, str):
         raise TypeError(f"Expected a str, got {type(plain_text).__name__}")
@@ -84,14 +84,14 @@ def encode(plain_text: str, key: int, Toggles: list, characters: str):
     return cipher_text
 
 
-def decode(cipher_text: str, key: int, Toggles: list, characters: str):
+def decode(cipher_text: str, key: int, Toggles: list, characters = ''):
 
     return encode(cipher_text, -key, Toggles, characters)
 
 
 # TODO: Add a disclaimer when choosing this function stating the below.
 # Only usable with one toggle on!
-def BruteForce(cipher_text: str, Toggles: list, characters: str):
+def BruteForce(cipher_text: str, Toggles: list, characters = ''):
 
     if not isinstance(Toggles, list):
         raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
@@ -151,7 +151,7 @@ def QuickSort(Dict: dict, List: list):
 # Only works for decryption of coherent English words! Use with English or Custom ciphers.
 # Results may not be perfect if the text is too short.
 # May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish, ...)
-def AutoDecrypt(cipher_text: str, Toggles: list, characters: str):
+def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
 
     if not isinstance(Toggles, list):
         raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
