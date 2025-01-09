@@ -1,35 +1,33 @@
-alpha = 'abcdefghijklmnopqrstuvwxyz'
-abc_dict = {'a': 0 , 'b': 1 , 'c': 2 , 'd': 3 , 'e': 4 , 'f': 5 , 'g': 6 , 'h': 7 , 'i': 8 ,
-            'j': 9 , 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17,
-            's': 18, 't': 19, 'u': 20, 'v': 21, 'w': 22, 'x': 23, 'y': 24, 'z': 25}
-ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-ABC_dict = {'A': 0 , 'B': 1 , 'C': 2 , 'D': 3 , 'E': 4 , 'F': 5 , 'G': 6 , 'H': 7 , 'I': 8 ,
-            'J': 9 , 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15, 'Q': 16, 'R': 17,
-            'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23, 'Y': 24, 'Z': 25}
+english_str = 'abcdefghijklmnopqrstuvwxyz'
+english_dict = {'a': 0 , 'b': 1 , 'c': 2 , 'd': 3 , 'e': 4 , 'f': 5 , 'g': 6 , 'h': 7 , 'i': 8 ,
+                'j': 9 , 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17,
+                's': 18, 't': 19, 'u': 20, 'v': 21, 'w': 22, 'x': 23, 'y': 24, 'z': 25}
+ENGLISH_str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+ENGLISH_dict = {'A': 0 , 'B': 1 , 'C': 2 , 'D': 3 , 'E': 4 , 'F': 5 , 'G': 6 , 'H': 7 , 'I': 8 ,
+                'J': 9 , 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15, 'Q': 16, 'R': 17,
+                'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X': 23, 'Y': 24, 'Z': 25}
 
-αλφα = 'αβγδεζηθικλμνξοπρστυφχψω'
-αβγ_dict = {'α': 0 , 'β': 1 , 'γ': 2 , 'δ': 3 , 'ε': 4 , 'ζ': 5 , 'η': 6 , 'θ': 7 , 'ι': 8 , 'κ': 9 , 'λ': 10, 'μ': 11,
-            'ν': 12, 'ξ': 13, 'ο': 14, 'π': 15, 'ρ': 16, 'σ': 17, 'τ': 18, 'υ': 19, 'φ': 20, 'χ': 21, 'ψ': 22, 'ω': 23,
-            'ά': 0 , 'έ': 4 , 'ή': 6 , 'ί': 8 , 'ϊ': 8 , 'ΐ': 8 , 'ό': 14, 'ς': 17, 'ύ': 19, 'ϋ': 19, 'ΰ': 19, 'ώ': 23}
-ΑΛΦΑ = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
-ΑΒΓ_dict = {'Α': 0 , 'Β': 1 , 'Γ': 2 , 'Δ': 3 , 'Ε': 4 , 'Ζ': 5 , 'Η': 6 , 'Θ': 7 , 'Ι': 8 , 'Κ': 9 , 'Λ': 10,
-            'Μ': 11, 'Ν': 12, 'Ξ': 13, 'Ο': 14, 'Π': 15, 'Ρ': 16, 'Σ': 17, 'Τ': 18, 'Υ': 19, 'Φ': 20, 'Χ': 21,
-            'Ψ': 22, 'Ω': 23, 'Ά': 0 , 'Έ': 4 , 'Ή': 6 , 'Ί': 8 , 'Ϊ': 8 , 'Ό': 14, 'Ύ': 19, 'Ϋ': 19, 'Ώ': 23}
+greek_str = 'αβγδεζηθικλμνξοπρστυφχψω'
+greek_dict = {'α': 0 , 'β': 1 , 'γ': 2 , 'δ': 3 , 'ε': 4 , 'ζ': 5 , 'η': 6 , 'θ': 7 , 'ι': 8 , 'κ': 9 , 'λ': 10, 'μ': 11,
+              'ν': 12, 'ξ': 13, 'ο': 14, 'π': 15, 'ρ': 16, 'σ': 17, 'τ': 18, 'υ': 19, 'φ': 20, 'χ': 21, 'ψ': 22, 'ω': 23,
+              'ά': 0 , 'έ': 4 , 'ή': 6 , 'ί': 8 , 'ϊ': 8 , 'ΐ': 8 , 'ό': 14, 'ς': 17, 'ύ': 19, 'ϋ': 19, 'ΰ': 19, 'ώ': 23}
+GREEK_str = 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
+GREEK_dict = {'Α': 0 , 'Β': 1 , 'Γ': 2 , 'Δ': 3 , 'Ε': 4 , 'Ζ': 5 , 'Η': 6 , 'Θ': 7 , 'Ι': 8 , 'Κ': 9 , 'Λ': 10,
+              'Μ': 11, 'Ν': 12, 'Ξ': 13, 'Ο': 14, 'Π': 15, 'Ρ': 16, 'Σ': 17, 'Τ': 18, 'Υ': 19, 'Φ': 20, 'Χ': 21,
+              'Ψ': 22, 'Ω': 23, 'Ά': 0 , 'Έ': 4 , 'Ή': 6 , 'Ί': 8 , 'Ϊ': 8 , 'Ό': 14, 'Ύ': 19, 'Ϋ': 19, 'Ώ': 23}
 
 # TODO: Add a preview of the syms string below to show which and how the characters will rotate.
-syms = '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ '''
-sym_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3': 7 , '$': 8 , '4': 9, '€': 10, '%': 11, '5': 12, '^': 13, '6': 14,
-            '&': 15, '7': 16, '*': 17, '8': 18, '(': 19, '9': 20, ')': 21, '0': 22, '_': 23, '-': 24, '+': 25, '=': 26, '{': 27, '[': 28,
-            '}': 29, ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
-
-Toggles = {False, False, False, False}
+symbol_str = '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ '''
+symbol_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3': 7 , '$': 8 , '4': 9 , '€': 10, '%': 11, '5': 12, '^': 13, '6': 14,
+               '&': 15, '7': 16, '*': 17, '8': 18, '(': 19, '9': 20, ')': 21, '0': 22, '_': 23, '-': 24, '+': 25, '=': 26, '{': 27, '[': 28, '}': 29,
+               ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
 
 # TODO: Add toggles to the UI for the options: English, Greek, Symbols and Numbers, Custom.
 # TODO: Do not run if no toggle is chosen and show a respective message.
 # TODO: Custom should disable all other toggles (on UI as well).
 # TODO: Ask for unique characters as a string and assign the given string to "characters" below.
 # TODO: There should be a 'Toggle' list in the format:
-# Toggles = {False, False, False, False} where each respectively represents: English, Greek, Symbols, Custom.
+# Toggles = [True, False, False, False] where each respectively represents: English, Greek, Symbols, Custom.
 def encode(plain_text: str, key: int, Toggles: list, characters = ''):
 
     if not isinstance(plain_text, str):
@@ -51,32 +49,32 @@ def encode(plain_text: str, key: int, Toggles: list, characters = ''):
                 raise ValueError(f"Expected only unique characters, got {characters[i]} multiple times")
 
     if Toggles[3]:
-        cha_dict = {}
+        characters_dict = {}
         for i in range(len(characters)):
-            cha_dict.setdefault(characters[i], i)
+            characters.setdefault(characters[i], i)
 
     cipher_text = ''
     for i in plain_text:
 
         if Toggles[3]:
             if i in characters:
-                cipher_text += characters[(cha_dict[i] - key) % len(characters)]
+                cipher_text += characters[(characters_dict[i] - key) % len(characters)]
             else:
                 cipher_text += i
             continue
 
-        elif Toggles[0] and i in alpha:
-            cipher_text += alpha[(abc_dict[i] - key) % 26]
-        elif Toggles[0] and i in ALPHA:
-            cipher_text += ALPHA[(ABC_dict[i] - key) % 26]
+        elif Toggles[0] and i in english_str:
+            cipher_text += english_str[(english_dict[i] - key) % 26]
+        elif Toggles[0] and i in ENGLISH_str:
+            cipher_text += ENGLISH_str[(ENGLISH_dict[i] - key) % 26]
 
-        elif Toggles[1] and i in αβγ_dict:
-            cipher_text += αλφα[(αβγ_dict[i] - key) % 24]
-        elif Toggles[1] and i in ΑΒΓ_dict:
-            cipher_text += ΑΛΦΑ[(ΑΒΓ_dict[i] - key) % 24]
+        elif Toggles[1] and i in greek_dict:
+            cipher_text += greek_str[(greek_dict[i] - key) % 24]
+        elif Toggles[1] and i in GREEK_dict:
+            cipher_text += GREEK_str[(GREEK_dict[i] - key) % 24]
 
-        elif Toggles[2] and i in syms:
-            cipher_text += syms[(sym_dict[i] - key) % 43]
+        elif Toggles[2] and i in symbol_str:
+            cipher_text += symbol_str[(symbol_dict[i] - key) % 43]
 
         else:
             cipher_text += i
@@ -131,18 +129,18 @@ Quadrigrams = {'that':6, 'ther':6, 'with':6, 'tion':6, 'here':6, 'ould':6, 'ight
                'this':6, 'thin':6, 'they':6, 'atio':6, 'ever':6, 'from':6, 'ough':6, 'were':6, 'hing':6, 'ment':6}
 
 
-# Altered so it can be used to sort a dictionary and do so in reverse order.
-def QuickSort(Dict: dict, List: list):
+# Altered to sort a list of dicts and do so in reverse order.
+def QuickSort(List: list):
     if len(List) < 2: return List
     i = 0
     for j in range(len(List)-1):
-        if Dict[List[j]] > Dict[List[-1]]:
+        if List[j][2] > List[-1][2]:
             List[i], List[j] = List[j], List[i]
             i += 1
     List[i], List[-1] = List[-1], List[i]
 
-    Left = QuickSort(Dict, List[:i])
-    Right = QuickSort(Dict, List[i+1:])
+    Left = QuickSort(List[:i])
+    Right = QuickSort(List[i+1:])
 
     return Left + [List[i]] + Right
 
@@ -161,10 +159,9 @@ def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
         if not isinstance(i, bool):
             raise TypeError(f"Expected a bool, got {type(i).__name__}")
 
-
     EngToggles = [Toggles[0], False, False, Toggles[3]]
     PossibleDecryptions = BruteForce(cipher_text, EngToggles, characters)
-    DecryptionScores = {}
+    DecryptionList = []
 
     for decrypted_message in PossibleDecryptions:
         key = PossibleDecryptions[decrypted_message]
@@ -172,8 +169,8 @@ def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
 
         modified_message = ''
         for i in decrypted_message:
-            if i in ALPHA:
-                modified_message += alpha[ABC_dict[i]]
+            if i in ENGLISH_str:
+                modified_message += english_str[ENGLISH_dict[i]]
                 points -= 1
             else:
                 modified_message += i
@@ -184,18 +181,12 @@ def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
                 if modified_message[j: j+i+1] in Ngrams:
                     points += 100 * Ngrams[modified_message[j: j+i+1]]
 
-        string = ''
-        if key < 10: string = '0'
-        key_decryption = 'key = ' + string + str(key) + ': ' + decrypted_message
-        DecryptionScores.setdefault(key_decryption, points)
+        if key < 10:
+            key = '0' + str(key)
+        else:
+            key = str(key)
+        DecryptionList.append({0:key, 1:decrypted_message, 2:points})
 
-    DecryptionsList = []
-    for i in DecryptionScores:
-        DecryptionsList.append(i)
+    SortedList = QuickSort(DecryptionList)
 
-    SortedList = QuickSort(DecryptionScores, DecryptionsList)
-    TopDecryptions = {}
-    for i in SortedList:
-        TopDecryptions.setdefault(i, DecryptionScores[i])
-
-    return TopDecryptions
+    return SortedList
