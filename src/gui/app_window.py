@@ -6,6 +6,7 @@ from src.gui.geometry import GeometryBuilder
 from src.gui import screen
 from src.gui import styles
 from src.gui import widgets 
+from src import core
 
 class AppWindow(tk.Tk):
     def __init__(self):
@@ -92,7 +93,7 @@ class AppWindow(tk.Tk):
 
 
     def get_key(self):
-        return self.key_entry.get()
+        return int(self.key_entry.get())
     
     def set_Toggles(self,sentence: str):
 
@@ -114,41 +115,35 @@ class AppWindow(tk.Tk):
         return Toggles
 
 
-
     def display_encoded_input(self):
-        key= self.get_key()
-        key=int(key)
-        input_text=self.get_input()
-        from src.core import encode
-        Toggles=self.set_Toggles(input_text)
-        encoded_text=encode(input_text,key,Toggles,"")
-        self.output_text.config(state=tk.NORMAL)  
+        key = self.get_key()
+        input_text = self.get_input()
+        toggles = self.set_Toggles(input_text)
+        encoded_text = core.encode(input_text,key,toggles)
+
+        self.output_text.config(state = tk.NORMAL)  
         self.output_text.delete("1.0", tk.END)  
         self.output_text.insert("1.0", encoded_text)  
-        self.output_text.config(state=tk.DISABLED)
-        pass
+        self.output_text.config(state = tk.DISABLED)
 
 
     def display_decoded_input(self):
-        key= self.get_key()
-        key=int(key)
-        input_text=self.get_input()
-        from src.core import decode
-        Toggles=self.set_Toggles(input_text)
-        decoded_text=decode(input_text,key,Toggles,"")
-        self.output_text.config(state=tk.NORMAL)  
+        key = self.get_key()
+        input_text = self.get_input()
+        toggles = self.set_Toggles(input_text)
+        decoded_text = core.decode(input_text, key, toggles)
+        self.output_text.config(state = tk.NORMAL)  
         self.output_text.delete("1.0", tk.END)  
         self.output_text.insert("1.0", decoded_text)  
-        self.output_text.config(state=tk.DISABLED)
-        pass 
+        self.output_text.config(state = tk.DISABLED)
+
 
     def display_autodecrypt_input(self):
-        input_text=self.get_input()
-        from src.core import AutoDecrypt
-        Toggles=self.set_Toggles(input_text)
-        decrypted_messages = AutoDecrypt(input_text, Toggles).keys()
+        input_text = self.get_input()
+        toggles = self.set_Toggles(input_text)
+        decrypted_messages = core.AutoDecrypt(input_text, toggles).keys()
 
-        self.output_text.config(state=tk.NORMAL)  
+        self.output_text.config(state = tk.NORMAL)  
 
         self.output_text.delete("1.0", tk.END)  
         for decrypted_message in decrypted_messages: 
