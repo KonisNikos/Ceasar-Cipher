@@ -86,7 +86,7 @@ class AppWindow(tk.Tk):
         self.buttons_frame.pack(pady = 15)
         self.encode_button.pack(side = tk.LEFT, padx = 10)
         self.decode_button.pack(side = tk.RIGHT, padx = 10)
-        self.autodecrypt_button.pack(side = tk.LEFT, padx=10)
+        self.autodecrypt_button.pack(side = tk.LEFT, padx = 10)
 
     def get_input(self):
         return self.input_text.get("1.0", "end-1c")
@@ -95,31 +95,13 @@ class AppWindow(tk.Tk):
     def get_key(self):
         return int(self.key_entry.get())
     
-    def set_Toggles(self,sentence: str):
-
-        english_dicts = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-        greek_dicts = set('αβγδεζηθικλμνξοπρστυφχψωάέήίϊΐόύϋΰώΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆΈΉΊΪΌΎΫΏ')
-        symbol_dicts = set('~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"\'<,>.?/ ')
-        Toggles = [False, False, False, False]
-
-        for char in sentence:
-            if char in english_dicts:
-                Toggles[0] = True
-            elif char in greek_dicts:
-                Toggles[1] = True
-            elif char in symbol_dicts:
-                Toggles[2] = True
-            else:
-                Toggles[3] = True
-
-        return Toggles
-
 
     def display_encoded_input(self):
         key = self.get_key()
         input_text = self.get_input()
-        toggles = self.set_Toggles(input_text)
-        encoded_text = core.encode(input_text,key,toggles)
+        toggles = [True, True, True, False] 
+        encoded_text = core.encode(input_text, key, toggles)
+
 
         self.output_text.config(state = tk.NORMAL)  
         self.output_text.delete("1.0", tk.END)  
@@ -130,7 +112,7 @@ class AppWindow(tk.Tk):
     def display_decoded_input(self):
         key = self.get_key()
         input_text = self.get_input()
-        toggles = self.set_Toggles(input_text)
+        toggles = [True, True, True, False]
         decoded_text = core.decode(input_text, key, toggles)
         self.output_text.config(state = tk.NORMAL)  
         self.output_text.delete("1.0", tk.END)  
@@ -140,14 +122,14 @@ class AppWindow(tk.Tk):
 
     def display_autodecrypt_input(self):
         input_text = self.get_input()
-        toggles = self.set_Toggles(input_text)
-        decrypted_messages = core.AutoDecrypt(input_text, toggles).keys()
+        toggles = [True, False, False, False]
+        decrypted_messages = core.AutoDecrypt(input_text, toggles)
 
-        self.output_text.config(state = tk.NORMAL)  
+        self.output_text.config(state = tk.NORMAL) 
 
-        self.output_text.delete("1.0", tk.END)  
+        self.output_text.delete("1.0", tk.END)
         for decrypted_message in decrypted_messages: 
-            self.output_text.insert(tk.END, decrypted_message)  
-            self.output_text.insert(tk.END,"\n")
+            self.output_text.insert(tk.END, decrypted_message)
+            self.output_text.insert(tk.END, "\n")
 
-        self.output_text.config(state=tk.DISABLED)
+        self.output_text.config(state = tk.DISABLED)
