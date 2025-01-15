@@ -93,6 +93,26 @@ class AppWindow(tk.Tk):
 
     def get_key(self):
         return self.key_entry.get()
+    
+    def set_Toggles(self,sentence: str):
+
+        english_dicts = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        greek_dicts = set('αβγδεζηθικλμνξοπρστυφχψωάέήίϊΐόύϋΰώΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆΈΉΊΪΌΎΫΏ')
+        symbol_dicts = set('~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"\'<,>.?/ ')
+        Toggles = [False, False, False, False]
+
+        for char in sentence:
+            if char in english_dicts:
+                Toggles[0] = True
+            elif char in greek_dicts:
+                Toggles[1] = True
+            elif char in symbol_dicts:
+                Toggles[2] = True
+            else:
+                Toggles[3] = True
+
+        return Toggles
+
 
 
     def display_encoded_input(self):
@@ -100,7 +120,7 @@ class AppWindow(tk.Tk):
         key=int(key)
         input_text=self.get_input()
         from src.core import encode
-        Toggles=[True,True,True,False]
+        Toggles=self.set_Toggles(input_text)
         encoded_text=encode(input_text,key,Toggles,"")
         self.output_text.config(state=tk.NORMAL)  
         self.output_text.delete("1.0", tk.END)  
@@ -114,7 +134,7 @@ class AppWindow(tk.Tk):
         key=int(key)
         input_text=self.get_input()
         from src.core import decode
-        Toggles=[True,True,True,False]
+        Toggles=self.set_Toggles(input_text)
         decoded_text=decode(input_text,key,Toggles,"")
         self.output_text.config(state=tk.NORMAL)  
         self.output_text.delete("1.0", tk.END)  
@@ -125,8 +145,8 @@ class AppWindow(tk.Tk):
     def display_autodecrypt_input(self):
         input_text=self.get_input()
         from src.core import AutoDecrypt
-        toggles=[True,True,True,False]
-        decrypted_messages = AutoDecrypt(input_text, toggles).keys()
+        Toggles=self.set_Toggles(input_text)
+        decrypted_messages = AutoDecrypt(input_text, Toggles).keys()
 
         self.output_text.config(state=tk.NORMAL)  
 
