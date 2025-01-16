@@ -27,6 +27,7 @@ symbol_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3
                '&': 15, '7': 16, '*': 17, '8': 18, '(': 19, '9': 20, ')': 21, '0': 22, '_': 23, '-': 24, '+': 25, '=': 26, '{': 27, '[': 28, '}': 29,
                ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
 
+
 def save_history(mode: str, inputtxt: str, result="N/A", keypicked="N/A"):
     global searchcount
     global search_history
@@ -42,6 +43,7 @@ def save_history(mode: str, inputtxt: str, result="N/A", keypicked="N/A"):
 
     AutoPicked=False   
     BrutePicked=False
+
 
 def encode(plain_text: str, key: int, Toggles: list, characters = ''):
     global DecryptPicked
@@ -145,9 +147,10 @@ def BruteForce(cipher_text: str, Toggles: list, characters = ''):
             str_key = str(key)
         PossibleDecryptions.setdefault(decode(cipher_text, key, Toggles, characters), str_key)
 
+
     if BrutePicked==True and AutoPicked==False:
         save_history("BruteForce Decrypted",cipher_text)
-
+        
     return PossibleDecryptions
 
 

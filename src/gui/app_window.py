@@ -20,6 +20,7 @@ class AppWindow(tk.Tk):
         self.Toggles = [True, True, False, False]
         self.current_language = language.Language.ENGLISH
 
+
         super().__init__()
         self.title("Ceasar Cipher")
 
@@ -65,6 +66,8 @@ class AppWindow(tk.Tk):
         self.key_label = widgets.label(self.key_frame, key_label_text, padx = 5)
 
         self.key_entry = widgets.entry(self.key_frame,width = 8)
+
+
         self.buttons_frame = widgets.frame(self)
 
         encode_button_text = language.Text(
@@ -100,6 +103,12 @@ class AppWindow(tk.Tk):
         auto_decrypt_text = language.Text(
             language.TEXTS["AUTO_DECRYPT_BUTTON"],
             self.current_language
+        )
+        self.bruteforce_button = widgets.button(
+            self.buttons_frame,
+            text= "Brute Force",
+            command = self.display_bruteforce_input,
+            width = 12
         )
         self.autodecrypt_button = widgets.button(
             self.buttons_frame,
@@ -188,6 +197,8 @@ class AppWindow(tk.Tk):
 
         self.custom_label.grid(row=0, column = 0, padx = 5)
         self.custom_entry = tk.Entry(self.custom_frame, width = 20)
+
+
         self.custom_entry = widgets.entry(
             self.custom_frame,
             width = 30,
@@ -272,6 +283,7 @@ class AppWindow(tk.Tk):
         )
         close_button.pack(pady=10)
 
+
     def get_input(self):
         return self.input_text.get("1.0", "end-1c")
 
@@ -288,6 +300,7 @@ class AppWindow(tk.Tk):
         for child in self.get_children(self, [tk.Button, tk.Label]):
             child.language = self.current_language
             child.event_generate("<<onLanguageChange>>")
+            
     @staticmethod
     def get_children(parent, filters):
         children = []
@@ -299,8 +312,10 @@ class AppWindow(tk.Tk):
             children.extend(AppWindow.get_children(child, filters))
         return children
 
+
     def get_custom(self):
         return self.custom_entry.get()
+
 
 
     def update_toggles(self, index): 
@@ -314,6 +329,7 @@ class AppWindow(tk.Tk):
                 self.Toggles[i] = False
         else:
             self.Toggles[3] = False
+
 
         self.update_toggle_colors()
 
@@ -366,11 +382,11 @@ class AppWindow(tk.Tk):
         characters = self.get_custom()
         decoded_text = core.decode(input_text, key, self.Toggles, characters)
 
+
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert("1.0", decoded_text)
         self.output_text.config(state=tk.DISABLED)
-
 
     def display_bruteforce_input(self):
         input_text = self.get_input()
