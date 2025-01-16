@@ -158,31 +158,32 @@ class AppWindow(tk.Tk):
             self.help_window,
             text="Welcome to the Caesar Cipher app!\n\n"
                  "Use the input panel to enter text.\n"
-                 "Select toggles (English, Greek, Symbols, Custom).\n"
                  "Use Encode, Decode, Brute Force or AutoDecrypt to process your text.\n"
-                 "Make sure to choose a key when using Encode or Decode.\n\n"
+                 "!!! Make sure to choose a key when using Encode or Decode.\n"
+                 "!!! Select the toggles you want to use (English, Greek, Symbols, Custom).\n\n"
+                 "Encode:\n"
+                 "Cycles through the alphabet a number of places to the left. That number is the key.\n\n"
+                 "Decode:\n"
+                 "Cycles through the alphabet a number of places to the right. The opposite process of Encode.\n\n"
+                 "Brute Force:\n"
+                 "Outputs all possible decryptions with their keys.\n"
+                 "!!! Use with only one Toggle on at a time.\n\n"
+                 "AutoDecrypt:\n"
+                 "Outputs all possible decryptions from most likely to least.\n"
+                 "!!! Only works for decryption of coherent English words. Use with English or Custom toggles.\n"
+                 "Results may not be perfect if the given text is too short.\n"
+                 "May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish etc.)\n\n"
                  "Symbols:\n"
                  "Cycles through the string:\n"
                  '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ \n'''
                  "(there is a space in the end.)\n\n"
                  "Custom:\n"
                  "Input a string of characters to cycle through.\n"
-                 "Make sure all the characters are unique.\n"
-                 "Encode:\n"
-                 "Cycles through the alphabet a number of places to the left. That number is the key.\n\n"
-                 "Decode:\n"
-                 "Cycles through the alphabet a number of places to the right. The oppossite proccess of Encode.\n\n"
-                 "Brute Force:"
-                 "Outputs all possible decryptions with their keys.\n"
-                 "Use with only one Toggle on at a time.\n\n"
-                 "AutoDecrypt:\n"
-                 "Outputs all possible decryptions from most likely to least.\n"
-                 "Only works for decryption of coherent English words. Use with English or Custom toggles.\n"
-                 "Results may not be perfect if the given text is too short.\n"
-                 "May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish etc.)\n\n"
-                 "Click the help button again to close this window.",
+                 "!!! Make sure all the characters are unique.\n"
+                 "!!! Cannot be used with other toggles.\n\n"
+                 "Click the help button (?) again to close this window.",
             justify="left",
-            wraplength=500,
+            wraplength=600,
             bg='#3f4f76',
             fg=styles.FOREGROUND_COLOR,
             font=("Arial", 10)
