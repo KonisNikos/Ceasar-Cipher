@@ -43,12 +43,6 @@ def save_history(mode: str, inputtxt: str, result="N/A", keypicked="N/A"):
     AutoPicked=False   
     BrutePicked=False
 
-# TODO: Add toggles to the UI for the options: English, Greek, Symbols and Numbers, Custom.
-# TODO: Do not run if no toggle is chosen and show a respective message.
-# TODO: Custom should disable all other toggles (on UI as well).
-# TODO: Ask for unique characters as a string and assign the given string to "characters" below.
-# TODO: There should be a 'Toggle' list in the format:
-# Toggles = [True, False, False, False] where each respectively represents: English, Greek, Symbols, Custom.
 def encode(plain_text: str, key: int, Toggles: list, characters = ''):
     global DecryptPicked
     global AutoPicked
