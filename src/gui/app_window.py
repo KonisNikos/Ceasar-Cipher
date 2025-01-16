@@ -232,7 +232,7 @@ class AppWindow(tk.Tk):
         self.help_window.place_forget()
 
         language_text = language.Text(
-            language.TEXTS["Language_Toggle"],
+            language.TEXTS["LANGUAGE_TOGGLE"],
             self.current_language
         )
         self.switch_language_button = widgets.button(
@@ -241,7 +241,36 @@ class AppWindow(tk.Tk):
             command = self.switch_language
         )
         self.switch_language_button.place(relx = 0.04, rely = 0.02)
+
+        history_text = language.Text(
+            language.TEXTS["HISTORY"], self.current_language
+        )
+        self.history_button = widgets.button(
+            self,
+            history_text,
+            command=self.open_history_window,
+            width=20,
+        )
+        self.history_button.pack(pady=15)
+
         self.update_toggle_colors()
+
+    def open_history_window(self):
+        history_window = tk.Toplevel(self)
+        history_window.title("Search History")
+        history_window.geometry("400x300")
+        history_window.configure(bg=styles.BACKGROUND_COLOR)
+        history_label = widgets.label(
+            history_window, text="Search History:", font=("Arial", 14, "bold")
+        )
+        history_label.pack(pady=10)
+        for item in core.search_history:
+            item_label = widgets.label(history_window, text=item)
+            item_label.pack(pady=2)
+        close_button = widgets.button(
+            history_window, text="Close", command = history_window.destroy, width=10
+        )
+        close_button.pack(pady=10)
 
     def get_input(self):
         return self.input_text.get("1.0", "end-1c")

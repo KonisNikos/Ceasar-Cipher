@@ -53,9 +53,13 @@ TEXTS = {
         Language.ENGLISH: "Custom",
         Language.GREEK: "Προσαρμοσμένο"
     },
-    "Language_Toggle": {
+    "LANGUAGE_TOGGLE": {
         Language.ENGLISH: "English",
         Language.GREEK: "Ελληνικά"
+    },
+    "HISTORY": {
+        Language.ENGLISH: "History",
+        Language.GREEK: "Ιστορία"
     }
 }
 class Text():
