@@ -21,7 +21,7 @@ symbol_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3
                '&': 15, '7': 16, '*': 17, '8': 18, '(': 19, '9': 20, ')': 21, '0': 22, '_': 23, '-': 24, '+': 25, '=': 26, '{': 27, '[': 28, '}': 29,
                ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
 
-# TODO: Ask for unique characters as a string and assign the given string to "characters" below.
+
 def encode(plain_text: str, key: int, Toggles: list, characters = ''):
 
     if not isinstance(plain_text, str):
@@ -45,7 +45,7 @@ def encode(plain_text: str, key: int, Toggles: list, characters = ''):
     if Toggles[3]:
         characters_dict = {}
         for i in range(len(characters)):
-            characters.setdefault(characters[i], i)
+            characters_dict.setdefault(characters[i], i)
 
     cipher_text = ''
     for i in plain_text:

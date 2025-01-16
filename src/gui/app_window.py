@@ -131,6 +131,17 @@ class AppWindow(tk.Tk):
         self.toggle_custom_button.pack(side=tk.LEFT, padx=5)
         self.toggle_frame.pack(pady=10)
 
+        self.custom_frame = widgets.frame(self)
+        self.custom_frame.pack(pady=20, padx=20)
+        self.custom_label = widgets.label(self.custom_frame, text="custom:", padx = 10)
+        self.custom_label.grid(row=0, column=0, padx=5)
+        self.custom_entry = tk.Entry(self.custom_frame, width=20)
+        self.custom_entry = widgets.entry(
+            self.custom_frame,
+            width = 30,
+        )
+        self.custom_entry.grid(row=0, column=1, padx=5)
+
         self.help_button = widgets.button(
             self,
             text="?",
@@ -146,20 +157,21 @@ class AppWindow(tk.Tk):
         self.help_text = tk.Label(
             self.help_window,
             text="Welcome to the Caesar Cipher app!\n\n"
-                 "Use the input pannel to enter text.\n"
+                 "Use the input panel to enter text.\n"
                  "Select toggles (English, Greek, Symbols, Custom).\n"
                  "Use Encode, Decode, Brute Force or AutoDecrypt to process your text.\n"
                  "Make sure to choose a key when using Encode or Decode.\n\n"
                  "Symbols:\n"
                  "Cycles through the string:\n"
                  '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ \n'''
-                 "(there is a space in the end)\n\n"
+                 "(there is a space in the end.)\n\n"
                  "Custom:\n"
-                 "Input a string of characters to cycle through.\n\n"
+                 "Input a string of characters to cycle through.\n"
+                 "Make sure all the characters are unique.\n"
                  "Encode:\n"
-                 "Cycles through the alphabet a number of places to the left. That number is the key\n\n"
+                 "Cycles through the alphabet a number of places to the left. That number is the key.\n\n"
                  "Decode:\n"
-                 "Cycles through the alphabet a number of places to the right. The oppossite proccess of Encode\n\n"
+                 "Cycles through the alphabet a number of places to the right. The oppossite proccess of Encode.\n\n"
                  "Brute Force:"
                  "Outputs all possible decryptions with their keys.\n"
                  "Use with only one Toggle on at a time.\n\n"
@@ -184,7 +196,11 @@ class AppWindow(tk.Tk):
 
     def get_key(self):
         return self.key_entry.get()
-    
+
+
+    def get_custom(self):
+        return self.custom_entry.get()
+
 
     def update_toggles(self, index):
         
@@ -221,8 +237,9 @@ class AppWindow(tk.Tk):
         key = self.get_key()
         key = int(key)
         input_text = self.get_input()
+        characters = self.get_custom()
         from src.core import encode
-        encoded_text=encode(input_text, key, self.Toggles,"")
+        encoded_text=encode(input_text, key, self.Toggles, characters)
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert("1.0", encoded_text)
@@ -233,8 +250,9 @@ class AppWindow(tk.Tk):
         key = self.get_key()
         key = int(key)
         input_text = self.get_input()
+        characters = self.get_custom()
         from src.core import decode
-        decoded_text=decode(input_text, key, self.Toggles,"")
+        decoded_text=decode(input_text, key, self.Toggles, characters)
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert("1.0", decoded_text)
@@ -243,8 +261,9 @@ class AppWindow(tk.Tk):
 
     def display_bruteforce_input(self):
         input_text = self.get_input()
+        characters = self.get_custom()
         from src.core import BruteForce
-        decrypted_messages = BruteForce(input_text, self.Toggles)
+        decrypted_messages = BruteForce(input_text, self.Toggles, characters)
 
         self.output_text.config(state=tk.NORMAL)
 
@@ -258,8 +277,9 @@ class AppWindow(tk.Tk):
 
     def display_autodecrypt_input(self):
         input_text = self.get_input()
+        characters = self.get_custom()
         from src.core import AutoDecrypt
-        decrypted_messages = AutoDecrypt(input_text, self.Toggles)
+        decrypted_messages = AutoDecrypt(input_text, self.Toggles, characters)
 
         self.output_text.config(state=tk.NORMAL)
 
