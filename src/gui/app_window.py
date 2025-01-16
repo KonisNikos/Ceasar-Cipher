@@ -6,6 +6,9 @@ from src.gui.geometry import GeometryBuilder
 from src.gui import screen
 from src.gui import styles
 from src.gui import widgets 
+from src import core
+from src.gui import config 
+from src.gui import language
 
 class AppWindow(tk.Tk):
     def __init__(self):
@@ -14,10 +17,11 @@ class AppWindow(tk.Tk):
             import ctypes
             ctypes.windll.shcore.SetProcessDpiAwareness(2)
 
-        self.Toggles = [False, False, False, False]
+        self.Toggles = [True, True, False, False]
+        self.current_language = language.Language.ENGLISH
+
 
         super().__init__()
-
         self.title("Ceasar Cipher")
 
         screen_dimentions = screen.get_screen_dimentions(self)
@@ -33,7 +37,12 @@ class AppWindow(tk.Tk):
             width = 30, height = 10,
             padx = 5, pady = 5, 
         )
-        self.input_label = widgets.label(self.input_frame, text="Input:")
+
+        input_label_text = language.Text(
+            language.TEXTS["INPUT_LABEL"],
+            self.current_language
+        )
+        self.input_label = widgets.label(self.input_frame, input_label_text) 
 
         self.output_frame = widgets.frame(self.data_frame, padx = 20, pady = 10)
         self.output_text = widgets.text(
@@ -41,26 +50,59 @@ class AppWindow(tk.Tk):
             width = 30, height = 10,
             padx = 5, pady = 5 
         )
-        self.output_label = widgets.label(self.output_frame, text="Output:")
+
+        output_label_text = language.Text(
+            language.TEXTS["OUTPUT_LABEL"],
+            self.current_language
+        )
+        self.output_label = widgets.label(self.output_frame, output_label_text)
 
         self.key_frame = widgets.frame(self)
-        self.key_label = widgets.label(self.key_frame, text="key:", padx = 5)
-        self.key_entry = widgets.entry(
-            self.key_frame,
-            width = 8,
+
+        key_label_text = language.Text(
+            language.TEXTS["KEY_LABEL"],
+            self.current_language
         )
+        self.key_label = widgets.label(self.key_frame, key_label_text, padx = 5)
+
+        self.key_entry = widgets.entry(self.key_frame,width = 8)
+
+
         self.buttons_frame = widgets.frame(self)
+
+        encode_button_text = language.Text(
+            language.TEXTS["ENCODE_BUTTON"],
+            self.current_language
+        )
         self.encode_button = widgets.button(
             self.buttons_frame, 
-            text="Encode", 
+            encode_button_text,
             command = self.display_encoded_input,
-            width = 8
+        )
+
+        decode_button_text = language.Text(
+            language.TEXTS["DECODE_BUTTON"],
+            self.current_language
         )
         self.decode_button = widgets.button(
             self.buttons_frame,
-            text = "Decode",
+            decode_button_text,
             command = self.display_decoded_input,
-            width = 8 
+        )
+
+        brute_force_text = language.Text(
+            language.TEXTS["BRUTE_FORCE_BUTTON"],
+            self.current_language
+        )
+        self.bruteforce_button = widgets.button(
+            self.buttons_frame,
+            brute_force_text,
+            command = self.display_bruteforce_input,
+        ) 
+
+        auto_decrypt_text = language.Text(
+            language.TEXTS["AUTO_DECRYPT_BUTTON"],
+            self.current_language
         )
         self.bruteforce_button = widgets.button(
             self.buttons_frame,
@@ -70,10 +112,10 @@ class AppWindow(tk.Tk):
         )
         self.autodecrypt_button = widgets.button(
             self.buttons_frame,
-            text= "AutoDecrypt",
+            auto_decrypt_text,
             command = self.display_autodecrypt_input,
-            width = 12
         )
+
         self.input_frame.pack(side = tk.LEFT)
         self.output_frame.pack(side = tk.RIGHT)
 
@@ -97,45 +139,66 @@ class AppWindow(tk.Tk):
         self.autodecrypt_button.pack(side = tk.LEFT, padx = 10)
 
         self.toggle_frame = widgets.frame(self)
+
+        english_toggle_text = language.Text(
+            language.TEXTS["ENGLISH_TOGGLE"],
+            self.current_language 
+        )
         self.toggle_english_button = widgets.button(
             self.toggle_frame,
-            text="English",
+            english_toggle_text,
             command=lambda: self.update_toggles(0),
-            width=10
         )
 
+        greek_toggle_text = language.Text(
+            language.TEXTS["GREEK_TOGGLE"],
+            self.current_language 
+        )
         self.toggle_greek_button = widgets.button(
             self.toggle_frame,
-            text="Greek",
+            greek_toggle_text,
             command=lambda: self.update_toggles(1),
-            width=10
         )
 
+        symbols_toggle_text = language.Text(
+            language.TEXTS["SYMBOLS_TOGGLE"],
+            self.current_language 
+        )
         self.toggle_symbols_button = widgets.button(
             self.toggle_frame,
-            text="Symbols",
+            symbols_toggle_text,
             command=lambda: self.update_toggles(2),
-            width=10
         )
 
+        custom_toggle_text = language.Text(
+            language.TEXTS["CUSTOM_TOGGLE"],
+            self.current_language 
+        )
         self.toggle_custom_button = widgets.button(
             self.toggle_frame,
-            text="Custom",
+            custom_toggle_text,
             command=lambda: self.update_toggles(3),
-            width=10
         )
 
-        self.toggle_english_button.pack(side=tk.LEFT, padx=5)
-        self.toggle_greek_button.pack(side=tk.LEFT, padx=5)
-        self.toggle_symbols_button.pack(side=tk.LEFT, padx=5)
-        self.toggle_custom_button.pack(side=tk.LEFT, padx=5)
-        self.toggle_frame.pack(pady=10)
+        self.toggle_english_button.pack(side =tk.LEFT, padx=5)
+        self.toggle_greek_button.pack(side = tk.LEFT, padx=5)
+        self.toggle_symbols_button.pack(side = tk.LEFT, padx=5)
+        self.toggle_custom_button.pack(side = tk.LEFT, padx=5)
+        self.toggle_frame.pack(pady = 10)
 
         self.custom_frame = widgets.frame(self)
-        self.custom_frame.pack(pady=20, padx=20)
-        self.custom_label = widgets.label(self.custom_frame, text="Custom:", padx = 5)
-        self.custom_label.grid(row=0, column=0, padx=5)
-        self.custom_entry = tk.Entry(self.custom_frame, width=20)
+        self.custom_frame.pack(pady = 20, padx = 20)
+
+        custom_label_text = language.Text(
+            language.TEXTS["CUSTOM_LABEL"],
+            self.current_language
+        )
+        self.custom_label = widgets.label(self.custom_frame, custom_label_text, padx = 5)
+
+        self.custom_label.grid(row=0, column = 0, padx = 5)
+        self.custom_entry = tk.Entry(self.custom_frame, width = 20)
+
+
         self.custom_entry = widgets.entry(
             self.custom_frame,
             width = 30,
@@ -148,64 +211,114 @@ class AppWindow(tk.Tk):
             command=self.toggle_help_window,
             width=2,
             height=1,
-            font=("Arial", 12, "bold"),
-            bg=styles.BACKGROUND_COLOR
         )
         self.help_button.place(relx=0.97, rely=0.02, anchor=tk.NE)
 
-        self.help_window = tk.Frame(self, width=300, height=300, bg='#3f4f76', padx=10, pady=10)
-        self.help_text = tk.Label(
-            self.help_window,
-            text="Welcome to the Caesar Cipher app!\n\n"
-                 "Use the input panel to enter text.\n"
-                 "Use Encode, Decode, Brute Force or AutoDecrypt to process your text.\n"
-                 "!!! Make sure to choose a key when using Encode or Decode.\n"
-                 "!!! Select the toggles you want to use (English, Greek, Symbols, Custom).\n\n"
-                 "Encode:\n"
-                 "Cycles through the alphabet a number of places to the left. That number is the key.\n\n"
-                 "Decode:\n"
-                 "Cycles through the alphabet a number of places to the right. The opposite process of Encode.\n\n"
-                 "Brute Force:\n"
-                 "Outputs all possible decryptions with their keys.\n"
-                 "Uses only the leftmost toggle.\n"
-                 "Recommended to use with only one Toggle on at a time.\n\n"
-                 "AutoDecrypt:\n"
-                 "Outputs all possible decryptions from most likely to least.\n"
-                 "!!! Only works for decryption of coherent English words. Use with English or Custom toggles.\n"
-                 "Results may not be perfect if the given text is too short.\n"
-                 "May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish etc.)\n\n"
-                 "Symbols:\n"
-                 "Cycles through the string:\n"
-                 '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ \n'''
-                 "(there is a space in the end.)\n\n"
-                 "Custom:\n"
-                 "Input a string of characters to cycle through.\n"
-                 "!!! Make sure all the characters are unique.\n"
-                 "!!! Cannot be used with other toggles.\n\n"
-                 "Click the help button (?) again to close this window.",
-            justify="left",
-            wraplength=600,
-            bg='#3f4f76',
-            fg=styles.FOREGROUND_COLOR,
-            font=("Arial", 10)
+        self.help_window = widgets.frame(
+            self, 
+            bg='#111827', 
+            padx=10, 
+            pady=10,
+            relief = tk.SOLID,
+            borderwidth = 5
         )
-        self.help_text.pack()
+        
+        self.help_text = widgets.text(
+            self.help_window,
+            bg='#111827',
+            fg = styles.FOREGROUND_COLOR,
+            font = styles.FONT_SIZE,
+            borderwidth = 0
+        )
+        self.help_text.insert(tk.END, config.HELP_MESSAGE)
+        self.help_scrollbar = tk.Scrollbar(
+            self.help_window,
+            command = self.help_text.yview,
+            orient = tk.VERTICAL
+        )
+        self.help_text.config(yscrollcommand = self.help_scrollbar.set)
+        self.help_text.pack(side = tk.LEFT, padx = 10, pady = 10)
+        self.help_scrollbar.pack(side = tk.RIGHT, fill = tk.Y)
+
         self.help_window.place_forget()
+
+        language_text = language.Text(
+            language.TEXTS["LANGUAGE_TOGGLE"],
+            self.current_language
+        )
+        self.switch_language_button = widgets.button(
+            self,
+            language_text,
+            command = self.switch_language
+        )
+        self.switch_language_button.place(relx = 0.04, rely = 0.02)
+
+        history_text = language.Text(
+            language.TEXTS["HISTORY"], self.current_language
+        )
+        self.history_button = widgets.button(
+            self,
+            history_text,
+            command=self.open_history_window,
+            width=20,
+        )
+        self.history_button.pack(pady=15)
+
+        self.update_toggle_colors()
+
+    def open_history_window(self):
+        history_window = tk.Toplevel(self)
+        history_window.title("Search History")
+        history_window.geometry("400x300")
+        history_window.configure(bg=styles.BACKGROUND_COLOR)
+        history_label = widgets.label(
+            history_window, text="Search History:", font=("Arial", 14, "bold")
+        )
+        history_label.pack(pady=10)
+        for item in core.search_history:
+            item_label = widgets.label(history_window, text=item)
+            item_label.pack(pady=2)
+        close_button = widgets.button(
+            history_window, text="Close", command = history_window.destroy, width=10
+        )
+        close_button.pack(pady=10)
+
 
     def get_input(self):
         return self.input_text.get("1.0", "end-1c")
 
 
     def get_key(self):
-        return self.key_entry.get()
+        return int(self.key_entry.get())
+
+    def switch_language(self):
+        if self.current_language == language.Language.ENGLISH:
+            self.current_language = language.Language.GREEK
+        else:
+            self.current_language = language.Language.ENGLISH
+
+        for child in self.get_children(self, [tk.Button, tk.Label]):
+            child.language = self.current_language
+            child.event_generate("<<onLanguageChange>>")
+            
+    @staticmethod
+    def get_children(parent, filters):
+        children = []
+        for child in parent.winfo_children():
+            for filter_type in filters:
+                if isinstance(child, filter_type):
+                    children.append(child)
+                    break 
+            children.extend(AppWindow.get_children(child, filters))
+        return children
 
 
     def get_custom(self):
         return self.custom_entry.get()
 
 
-    def update_toggles(self, index):
-        
+
+    def update_toggles(self, index): 
         if self.Toggles[index] == True:
             self.Toggles[index] = False
         else:
@@ -217,31 +330,46 @@ class AppWindow(tk.Tk):
         else:
             self.Toggles[3] = False
 
+
+        self.update_toggle_colors()
+
+    def update_toggle_colors(self):
         default_color = styles.BACKGROUND_COLOR
         active_color = styles.ACTIVE_BACKGROUND_COLOR
-        Buttons = [self.toggle_english_button, self.toggle_greek_button, self.toggle_symbols_button, self.toggle_custom_button]
+
+        buttons = [
+            self.toggle_english_button, 
+            self.toggle_greek_button, 
+            self.toggle_symbols_button, 
+            self.toggle_custom_button
+        ]
 
         for i in range(4):
             if self.Toggles[i] == True:
-                Buttons[i].configure(bg=active_color)
+                buttons[i].configure(bg = active_color)
             else:
-                Buttons[i].configure(bg=default_color)
+                buttons[i].configure(bg = default_color)
 
 
     def toggle_help_window(self):
         if self.help_window.winfo_ismapped():
             self.help_window.place_forget()
         else:
-            self.help_window.place(relx=0.5, rely=0.2, anchor=tk.N)
+            self.help_window.place(
+                relx=0.5,
+                rely=0.1,
+                relheight = 0.7,
+                relwidth = 0.75,
+                anchor=tk.N
+            )
 
 
     def display_encoded_input(self):
         key = self.get_key()
-        key = int(key)
         input_text = self.get_input()
         characters = self.get_custom()
-        from src.core import encode
-        encoded_text=encode(input_text, key, self.Toggles, characters)
+        encoded_text = core.encode(input_text, key, self.Toggles, characters)
+
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert("1.0", encoded_text)
@@ -250,28 +378,28 @@ class AppWindow(tk.Tk):
 
     def display_decoded_input(self):
         key = self.get_key()
-        key = int(key)
         input_text = self.get_input()
         characters = self.get_custom()
-        from src.core import decode
-        decoded_text=decode(input_text, key, self.Toggles, characters)
+        decoded_text = core.decode(input_text, key, self.Toggles, characters)
+
+
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert("1.0", decoded_text)
         self.output_text.config(state=tk.DISABLED)
 
-
     def display_bruteforce_input(self):
         input_text = self.get_input()
         characters = self.get_custom()
-        from src.core import BruteForce
-        decrypted_messages = BruteForce(input_text, self.Toggles, characters)
+        decrypted_messages = core.BruteForce(input_text, self.Toggles, characters)
 
-        self.output_text.config(state=tk.NORMAL)
-
+        self.output_text.config(state = tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         for decrypted_message in decrypted_messages:
-            self.output_text.insert(tk.END, 'key = '+str(decrypted_messages[decrypted_message])+' : '+decrypted_message)
+            self.output_text.insert(
+                tk.END, 
+                f"key = {decrypted_messages[decrypted_message]} : {decrypted_message}"
+            )
             self.output_text.insert(tk.END, "\n")
 
         self.output_text.config(state=tk.DISABLED)
@@ -280,14 +408,15 @@ class AppWindow(tk.Tk):
     def display_autodecrypt_input(self):
         input_text = self.get_input()
         characters = self.get_custom()
-        from src.core import AutoDecrypt
-        decrypted_messages = AutoDecrypt(input_text, self.Toggles, characters)
+        decrypted_messages = core.AutoDecrypt(input_text, self.Toggles, characters)
 
         self.output_text.config(state=tk.NORMAL)
 
         self.output_text.delete("1.0", tk.END)
         for decrypted_message in decrypted_messages:
-            self.output_text.insert(tk.END, 'key = '+str(decrypted_message[0])+' : '+decrypted_message[1])
+            self.output_text.insert(
+                tk.END, 
+                f"key = {decrypted_message[0]} : {decrypted_message[1]}"
+            )
             self.output_text.insert(tk.END, "\n")
-
         self.output_text.config(state=tk.DISABLED)
