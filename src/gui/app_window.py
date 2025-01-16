@@ -133,7 +133,7 @@ class AppWindow(tk.Tk):
 
         self.custom_frame = widgets.frame(self)
         self.custom_frame.pack(pady=20, padx=20)
-        self.custom_label = widgets.label(self.custom_frame, text="custom:", padx = 10)
+        self.custom_label = widgets.label(self.custom_frame, text="Custom:", padx = 5)
         self.custom_label.grid(row=0, column=0, padx=5)
         self.custom_entry = tk.Entry(self.custom_frame, width=20)
         self.custom_entry = widgets.entry(
@@ -167,7 +167,8 @@ class AppWindow(tk.Tk):
                  "Cycles through the alphabet a number of places to the right. The opposite process of Encode.\n\n"
                  "Brute Force:\n"
                  "Outputs all possible decryptions with their keys.\n"
-                 "!!! Use with only one Toggle on at a time.\n\n"
+                 "Uses only the leftmost toggle.\n"
+                 "Recommended to use with only one Toggle on at a time.\n\n"
                  "AutoDecrypt:\n"
                  "Outputs all possible decryptions from most likely to least.\n"
                  "!!! Only works for decryption of coherent English words. Use with English or Custom toggles.\n"
