@@ -14,6 +14,8 @@ class AppWindow(tk.Tk):
             import ctypes
             ctypes.windll.shcore.SetProcessDpiAwareness(2)
 
+        self.Toggles = [False, False, False, False]
+
         super().__init__()
 
         self.title("Ceasar Cipher")
@@ -23,9 +25,9 @@ class AppWindow(tk.Tk):
         self.geometry(geometry_string)
 
         self.configure(bg = styles.BACKGROUND_COLOR)
-        self.data_frame = widgets.frame(self) 
+        self.data_frame = widgets.frame(self)
 
-        self.input_frame = widgets.frame(self.data_frame, padx = 20, pady = 10)        
+        self.input_frame = widgets.frame(self.data_frame, padx = 20, pady = 10)
         self.input_text = widgets.text(
             self.input_frame, 
             width = 30, height = 10,
@@ -46,19 +48,25 @@ class AppWindow(tk.Tk):
         self.key_entry = widgets.entry(
             self.key_frame,
             width = 8,
-        ) 
+        )
         self.buttons_frame = widgets.frame(self)
         self.encode_button = widgets.button(
             self.buttons_frame, 
             text="Encode", 
             command = self.display_encoded_input,
             width = 8
-        ) 
+        )
         self.decode_button = widgets.button(
             self.buttons_frame,
             text = "Decode",
             command = self.display_decoded_input,
             width = 8 
+        )
+        self.bruteforce_button = widgets.button(
+            self.buttons_frame,
+            text= "Brute Force",
+            command = self.display_bruteforce_input,
+            width = 12
         )
         self.autodecrypt_button = widgets.button(
             self.buttons_frame,
@@ -84,8 +92,91 @@ class AppWindow(tk.Tk):
 
         self.buttons_frame.pack(pady = 15)
         self.encode_button.pack(side = tk.LEFT, padx = 10)
-        self.decode_button.pack(side = tk.RIGHT, padx = 10)
-        self.autodecrypt_button.pack(side = tk.LEFT, padx=10)
+        self.decode_button.pack(side = tk.LEFT, padx = 10)
+        self.bruteforce_button.pack(side = tk.LEFT, padx = 10)
+        self.autodecrypt_button.pack(side = tk.LEFT, padx = 10)
+
+        self.toggle_frame = widgets.frame(self)
+        self.toggle_english_button = widgets.button(
+            self.toggle_frame,
+            text="English",
+            command=lambda: self.update_toggles(0),
+            width=10
+        )
+
+        self.toggle_greek_button = widgets.button(
+            self.toggle_frame,
+            text="Greek",
+            command=lambda: self.update_toggles(1),
+            width=10
+        )
+
+        self.toggle_symbols_button = widgets.button(
+            self.toggle_frame,
+            text="Symbols",
+            command=lambda: self.update_toggles(2),
+            width=10
+        )
+
+        self.toggle_custom_button = widgets.button(
+            self.toggle_frame,
+            text="Custom",
+            command=lambda: self.update_toggles(3),
+            width=10
+        )
+
+        self.toggle_english_button.pack(side=tk.LEFT, padx=5)
+        self.toggle_greek_button.pack(side=tk.LEFT, padx=5)
+        self.toggle_symbols_button.pack(side=tk.LEFT, padx=5)
+        self.toggle_custom_button.pack(side=tk.LEFT, padx=5)
+        self.toggle_frame.pack(pady=10)
+
+        self.help_button = widgets.button(
+            self,
+            text="?",
+            command=self.toggle_help_window,
+            width=2,
+            height=1,
+            font=("Arial", 12, "bold"),
+            bg=styles.BACKGROUND_COLOR
+        )
+        self.help_button.place(relx=0.97, rely=0.02, anchor=tk.NE)
+
+        self.help_window = tk.Frame(self, width=300, height=300, bg='#3f4f76', padx=10, pady=10)
+        self.help_text = tk.Label(
+            self.help_window,
+            text="Welcome to the Caesar Cipher app!\n\n"
+                 "Use the input pannel to enter text.\n"
+                 "Select toggles (English, Greek, Symbols, Custom).\n"
+                 "Use Encode, Decode, Brute Force or AutoDecrypt to process your text.\n"
+                 "Make sure to choose a key when using Encode or Decode.\n\n"
+                 "Symbols:\n"
+                 "Cycles through the string:\n"
+                 '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ \n'''
+                 "(there is a space in the end)\n\n"
+                 "Custom:\n"
+                 "Input a string of characters to cycle through.\n\n"
+                 "Encode:\n"
+                 "Cycles through the alphabet a number of places to the left. That number is the key\n\n"
+                 "Decode:\n"
+                 "Cycles through the alphabet a number of places to the right. The oppossite proccess of Encode\n\n"
+                 "Brute Force:"
+                 "Outputs all possible decryptions with their keys.\n"
+                 "Use with only one Toggle on at a time.\n\n"
+                 "AutoDecrypt:\n"
+                 "Outputs all possible decryptions from most likely to least.\n"
+                 "Only works for decryption of coherent English words. Use with English or Custom toggles.\n"
+                 "Results may not be perfect if the given text is too short.\n"
+                 "May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish etc.)\n\n"
+                 "Click the help button again to close this window.",
+            justify="left",
+            wraplength=500,
+            bg='#3f4f76',
+            fg=styles.FOREGROUND_COLOR,
+            font=("Arial", 10)
+        )
+        self.help_text.pack()
+        self.help_window.place_forget()
 
     def get_input(self):
         return self.input_text.get("1.0", "end-1c")
@@ -94,65 +185,87 @@ class AppWindow(tk.Tk):
     def get_key(self):
         return self.key_entry.get()
     
-    def set_Toggles(self,sentence: str):
 
-        english_dicts = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-        greek_dicts = set('αβγδεζηθικλμνξοπρστυφχψωάέήίϊΐόύϋΰώΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆΈΉΊΪΌΎΫΏ')
-        symbol_dicts = set('~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"\'<,>.?/ ')
-        Toggles = [False, False, False, False]
+    def update_toggles(self, index):
+        
+        if self.Toggles[index] == True:
+            self.Toggles[index] = False
+        else:
+            self.Toggles[index] = True
+        
+        if index == 3:
+            for i in range(3):
+                self.Toggles[i] = False
+        else:
+            self.Toggles[3] = False
 
-        for char in sentence:
-            if char in english_dicts:
-                Toggles[0] = True
-            elif char in greek_dicts:
-                Toggles[1] = True
-            elif char in symbol_dicts:
-                Toggles[2] = True
+        default_color = styles.BACKGROUND_COLOR
+        active_color = styles.ACTIVE_BACKGROUND_COLOR
+        Buttons = [self.toggle_english_button, self.toggle_greek_button, self.toggle_symbols_button, self.toggle_custom_button]
+
+        for i in range(4):
+            if self.Toggles[i] == True:
+                Buttons[i].configure(bg=active_color)
             else:
-                Toggles[3] = True
+                Buttons[i].configure(bg=default_color)
 
-        return Toggles
 
+    def toggle_help_window(self):
+        if self.help_window.winfo_ismapped():
+            self.help_window.place_forget()
+        else:
+            self.help_window.place(relx=0.5, rely=0.2, anchor=tk.N)
 
 
     def display_encoded_input(self):
-        key= self.get_key()
-        key=int(key)
-        input_text=self.get_input()
+        key = self.get_key()
+        key = int(key)
+        input_text = self.get_input()
         from src.core import encode
-        Toggles=self.set_Toggles(input_text)
-        encoded_text=encode(input_text,key,Toggles,"")
-        self.output_text.config(state=tk.NORMAL)  
-        self.output_text.delete("1.0", tk.END)  
-        self.output_text.insert("1.0", encoded_text)  
+        encoded_text=encode(input_text, key, self.Toggles,"")
+        self.output_text.config(state=tk.NORMAL)
+        self.output_text.delete("1.0", tk.END)
+        self.output_text.insert("1.0", encoded_text)
         self.output_text.config(state=tk.DISABLED)
-        pass
 
 
     def display_decoded_input(self):
-        key= self.get_key()
-        key=int(key)
-        input_text=self.get_input()
+        key = self.get_key()
+        key = int(key)
+        input_text = self.get_input()
         from src.core import decode
-        Toggles=self.set_Toggles(input_text)
-        decoded_text=decode(input_text,key,Toggles,"")
-        self.output_text.config(state=tk.NORMAL)  
-        self.output_text.delete("1.0", tk.END)  
-        self.output_text.insert("1.0", decoded_text)  
+        decoded_text=decode(input_text, key, self.Toggles,"")
+        self.output_text.config(state=tk.NORMAL)
+        self.output_text.delete("1.0", tk.END)
+        self.output_text.insert("1.0", decoded_text)
         self.output_text.config(state=tk.DISABLED)
-        pass 
+
+
+    def display_bruteforce_input(self):
+        input_text = self.get_input()
+        from src.core import BruteForce
+        decrypted_messages = BruteForce(input_text, self.Toggles)
+
+        self.output_text.config(state=tk.NORMAL)
+
+        self.output_text.delete("1.0", tk.END)
+        for decrypted_message in decrypted_messages:
+            self.output_text.insert(tk.END, 'key = '+str(decrypted_messages[decrypted_message])+' : '+decrypted_message)
+            self.output_text.insert(tk.END, "\n")
+
+        self.output_text.config(state=tk.DISABLED)
+
 
     def display_autodecrypt_input(self):
-        input_text=self.get_input()
+        input_text = self.get_input()
         from src.core import AutoDecrypt
-        Toggles=self.set_Toggles(input_text)
-        decrypted_messages = AutoDecrypt(input_text, Toggles).keys()
+        decrypted_messages = AutoDecrypt(input_text, self.Toggles)
 
-        self.output_text.config(state=tk.NORMAL)  
+        self.output_text.config(state=tk.NORMAL)
 
-        self.output_text.delete("1.0", tk.END)  
-        for decrypted_message in decrypted_messages: 
-            self.output_text.insert(tk.END, decrypted_message)  
-            self.output_text.insert(tk.END,"\n")
+        self.output_text.delete("1.0", tk.END)
+        for decrypted_message in decrypted_messages:
+            self.output_text.insert(tk.END, 'key = '+str(decrypted_message[0])+' : '+decrypted_message[1])
+            self.output_text.insert(tk.END, "\n")
 
         self.output_text.config(state=tk.DISABLED)
