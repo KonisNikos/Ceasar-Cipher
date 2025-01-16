@@ -22,7 +22,6 @@ GREEK_dict = {'Α': 0 , 'Β': 1 , 'Γ': 2 , 'Δ': 3 , 'Ε': 4 , 'Ζ': 5 , 'Η': 
               'Μ': 11, 'Ν': 12, 'Ξ': 13, 'Ο': 14, 'Π': 15, 'Ρ': 16, 'Σ': 17, 'Τ': 18, 'Υ': 19, 'Φ': 20, 'Χ': 21,
               'Ψ': 22, 'Ω': 23, 'Ά': 0 , 'Έ': 4 , 'Ή': 6 , 'Ί': 8 , 'Ϊ': 8 , 'Ό': 14, 'Ύ': 19, 'Ϋ': 19, 'Ώ': 23}
 
-# TODO: Add a preview of the syms string below to show which and how the characters will rotate.
 symbol_str = '''~`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ '''
 symbol_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3': 7 , '$': 8 , '4': 9 , '€': 10, '%': 11, '5': 12, '^': 13, '6': 14,
                '&': 15, '7': 16, '*': 17, '8': 18, '(': 19, '9': 20, ')': 21, '0': 22, '_': 23, '-': 24, '+': 25, '=': 26, '{': 27, '[': 28, '}': 29,
@@ -76,7 +75,7 @@ def encode(plain_text: str, key: int, Toggles: list, characters = ''):
     if Toggles[3]:
         characters_dict = {}
         for i in range(len(characters)):
-            characters.setdefault(characters[i], i)
+            characters_dict.setdefault(characters[i], i)
 
     cipher_text = ''
     for i in plain_text:
@@ -120,8 +119,6 @@ def decode(cipher_text: str, key: int, Toggles: list, characters = ''):
     return encode(cipher_text, -key, Toggles, characters)
 
 
-# TODO: Add a disclaimer when choosing this function stating the below.
-# Only usable with one toggle on!
 def BruteForce(cipher_text: str, Toggles: list, characters = ''):
     global BrutePicked
     if AutoPicked==False:
@@ -148,7 +145,11 @@ def BruteForce(cipher_text: str, Toggles: list, characters = ''):
 
     PossibleDecryptions = {}
     for key in range(max_key):
-        PossibleDecryptions.setdefault(decode(cipher_text, key, Toggles, characters), key)
+        if key < 10:
+            str_key = '0' + str(key)
+        else:
+            str_key = str(key)
+        PossibleDecryptions.setdefault(decode(cipher_text, key, Toggles, characters), str_key)
 
     if BrutePicked==True and AutoPicked==False:
         save_history("BruteForce Decrypted",cipher_text)
@@ -168,7 +169,6 @@ Quadrigrams = {'that':6, 'ther':6, 'with':6, 'tion':6, 'here':6, 'ould':6, 'ight
                'this':6, 'thin':6, 'they':6, 'atio':6, 'ever':6, 'from':6, 'ough':6, 'were':6, 'hing':6, 'ment':6}
 
 
-# Altered to sort a list of dicts and do so in reverse order.
 def QuickSort(List: list):
     if len(List) < 2: return List
     i = 0
@@ -184,10 +184,6 @@ def QuickSort(List: list):
     return Left + [List[i]] + Right
 
 
-# TODO: Add a disclaimer when choosing this function stating the below.
-# Only works for decryption of coherent English words! Use with English or Custom ciphers.
-# Results may not be perfect if the text is too short.
-# May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish, ...)
 def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
     global AutoPicked
     AutoPicked=True
@@ -222,15 +218,11 @@ def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
                 if modified_message[j: j+i+1] in Ngrams:
                     points += 100 * Ngrams[modified_message[j: j+i+1]]
 
-        if key < 10:
-            key = '0' + str(key)
-        else:
-            key = str(key)
         DecryptionList.append({0:key, 1:decrypted_message, 2:points})
 
     SortedList = QuickSort(DecryptionList)
 
     if AutoPicked==True:
         save_history("AutoDecrypted",cipher_text,SortedList[0][1])
-        
+
     return SortedList
