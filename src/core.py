@@ -98,7 +98,7 @@ def BruteForce(cipher_text: str, Toggles: list, characters = ''):
     elif Toggles[1]:
         max_key = 24
     elif Toggles[2]:
-        max_key = 43    
+        max_key = 43
     elif Toggles[3]:
         max_key = len(characters)
 

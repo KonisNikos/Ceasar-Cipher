@@ -51,7 +51,7 @@ class GeometryBuilder():
 
     def center(self):
         #TODO account for title_bar height
-        center_position = self._screen_dimentions // 2 - self._shape // 2 
+        center_position = self._screen_dimentions // 2 - self._shape // 2
         self._position = center_position
         return self
 

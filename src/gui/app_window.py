@@ -34,22 +34,22 @@ class AppWindow(tk.Tk):
 
         self.input_frame = widgets.frame(self.data_frame, padx = 20, pady = 10)
         self.input_text = widgets.text(
-            self.input_frame, 
+            self.input_frame,
             width = 30, height = 10,
-            padx = 5, pady = 5, 
+            padx = 5, pady = 5,
         )
 
         input_label_text = language.Text(
             language.TEXTS["INPUT_LABEL"],
             self.current_language
         )
-        self.input_label = widgets.label(self.input_frame, input_label_text) 
+        self.input_label = widgets.label(self.input_frame, input_label_text)
 
         self.output_frame = widgets.frame(self.data_frame, padx = 20, pady = 10)
         self.output_text = widgets.text(
             self.output_frame, state=tk.DISABLED,
             width = 30, height = 10,
-            padx = 5, pady = 5 
+            padx = 5, pady = 5
         )
 
         output_label_text = language.Text(
@@ -75,7 +75,7 @@ class AppWindow(tk.Tk):
             self.current_language
         )
         self.encode_button = widgets.button(
-            self.buttons_frame, 
+            self.buttons_frame,
             encode_button_text,
             command = self.display_encoded_input,
         )
@@ -98,7 +98,7 @@ class AppWindow(tk.Tk):
             self.buttons_frame,
             brute_force_text,
             command = self.display_bruteforce_input,
-        ) 
+        )
 
         auto_decrypt_text = language.Text(
             language.TEXTS["AUTO_DECRYPT_BUTTON"],
@@ -141,7 +141,7 @@ class AppWindow(tk.Tk):
 
         english_toggle_text = language.Text(
             language.TEXTS["ENGLISH_TOGGLE"],
-            self.current_language 
+            self.current_language
         )
         self.toggle_english_button = widgets.button(
             self.toggle_frame,
@@ -151,7 +151,7 @@ class AppWindow(tk.Tk):
 
         greek_toggle_text = language.Text(
             language.TEXTS["GREEK_TOGGLE"],
-            self.current_language 
+            self.current_language
         )
         self.toggle_greek_button = widgets.button(
             self.toggle_frame,
@@ -171,7 +171,7 @@ class AppWindow(tk.Tk):
 
         custom_toggle_text = language.Text(
             language.TEXTS["CUSTOM_TOGGLE"],
-            self.current_language 
+            self.current_language
         )
         self.toggle_custom_button = widgets.button(
             self.toggle_frame,
@@ -213,9 +213,9 @@ class AppWindow(tk.Tk):
         self.help_button.place(relx=0.97, rely=0.02, anchor=tk.NE)
 
         self.help_window = widgets.frame(
-            self, 
-            bg='#111827', 
-            padx=10, 
+            self,
+            bg='#111827',
+            padx=10,
             pady=10,
             relief = tk.SOLID,
             borderwidth = 5
@@ -269,7 +269,7 @@ class AppWindow(tk.Tk):
         Toggle_str = '['
         for i in range(4):
             if Toggles[i]:
-                Toggle_str += ['English, ', 'Greek, ', ' Symbols', 'Custom'][i]
+                Toggle_str += ['English, ', 'Greek, ', 'Symbols', 'Custom'][i]
         Toggle_str = Toggle_str.strip(' ').strip(',') + ']'
         self.search_history.append(f" {self.searchcount}) {mode}, Toggles: {Toggle_str}, Key: {key_picked}\nInput: {input_str}\n{output}")
 
@@ -317,7 +317,7 @@ class AppWindow(tk.Tk):
             for filter_type in filters:
                 if isinstance(child, filter_type):
                     children.append(child)
-                    break 
+                    break
             children.extend(AppWindow.get_children(child, filters))
         return children
 
@@ -326,7 +326,7 @@ class AppWindow(tk.Tk):
         return self.custom_entry.get()
 
 
-    def update_toggles(self, index): 
+    def update_toggles(self, index):
         if self.Toggles[index] == True:
             self.Toggles[index] = False
         else:
@@ -346,9 +346,9 @@ class AppWindow(tk.Tk):
         active_color = styles.ACTIVE_BACKGROUND_COLOR
 
         buttons = [
-            self.toggle_english_button, 
-            self.toggle_greek_button, 
-            self.toggle_symbols_button, 
+            self.toggle_english_button,
+            self.toggle_greek_button,
+            self.toggle_symbols_button,
             self.toggle_custom_button
         ]
 
@@ -408,7 +408,7 @@ class AppWindow(tk.Tk):
         self.output_text.delete("1.0", tk.END)
         for decrypted_message in decrypted_messages:
             self.output_text.insert(
-                tk.END, 
+                tk.END,
                 f"key = {decrypted_messages[decrypted_message]} : {decrypted_message}"
             )
             self.output_text.insert(tk.END, "\n")
@@ -425,7 +425,7 @@ class AppWindow(tk.Tk):
         self.output_text.delete("1.0", tk.END)
         for decrypted_message in decrypted_messages:
             self.output_text.insert(
-                tk.END, 
+                tk.END,
                 f"key = {decrypted_message[0]} : {decrypted_message[1]}"
             )
             self.output_text.insert(tk.END, "\n")

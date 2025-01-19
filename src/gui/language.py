@@ -12,7 +12,7 @@ TEXTS = {
     "OUTPUT_LABEL": {
         Language.ENGLISH: "Output",
         Language.GREEK: "Έξοδος"
-    }, 
+    },
     "ENCODE_BUTTON": {
         Language.ENGLISH: "Encode",
         Language.GREEK: "Κρυπτογράφηση"
@@ -43,7 +43,7 @@ TEXTS = {
     },
     "SYMBOLS_TOGGLE": {
         Language.ENGLISH: "Symbols",
-        Language.GREEK: "Σύμβολα" 
+        Language.GREEK: "Σύμβολα"
     },
     "CUSTOM_TOGGLE": {
         Language.ENGLISH: "Custom",
@@ -70,10 +70,10 @@ class Text():
         self.value = texts
 
     def get_current_text(self):
-        current_text = self.value[self.current_language] 
+        current_text = self.value[self.current_language]
         if(current_text == None):
             return self.value.values(0)
-        return self.value[self.current_language]    
+        return self.value[self.current_language]
     
     def change_language(self, language: Language):
         self.current_language = language
