@@ -1,5 +1,5 @@
 HELP_MESSAGE = """Welcome to the Caesar Cipher app!\n
-Change between English and Greek from the button on the top left
+Change between English and Greek from the button on the top left.
 Use the input panel to enter text.
 Use Encode, Decode, Brute Force or AutoDecrypt to process your text.
 !!! Make sure to choose a key when using Encode or Decode."
