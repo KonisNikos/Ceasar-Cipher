@@ -223,7 +223,7 @@ class AppWindow(tk.Tk):
         
         self.help_text = widgets.text(
             self.help_window,
-            bg='#111827',
+            bg = '#111827',
             fg = styles.FOREGROUND_COLOR,
             font = styles.FONT_SIZE,
             borderwidth = 0
@@ -235,10 +235,15 @@ class AppWindow(tk.Tk):
             orient = tk.VERTICAL
         )
         self.help_text.config(yscrollcommand = self.help_scrollbar.set)
-        self.help_text.pack(side = tk.LEFT, padx = 10, pady = 10)
+        self.help_text.pack(
+            side = tk.LEFT, 
+            anchor = tk.N, 
+            padx = 10, 
+            pady = 10, 
+            expand = True, 
+            fill = tk.BOTH
+        )
         self.help_scrollbar.pack(side = tk.RIGHT, fill = tk.Y)
-
-        self.help_window.place_forget()
 
         language_text = language.Text(
             language.TEXTS["LANGUAGE_TOGGLE"],
@@ -260,7 +265,7 @@ class AppWindow(tk.Tk):
             command=self.open_history_window,
             width=20,
         )
-        self.history_button.pack(pady=15)
+        self.history_button.pack(pady = 15)
 
         self.update_toggle_colors()
 
@@ -388,12 +393,13 @@ class AppWindow(tk.Tk):
             self.help_window.place_forget()
         else:
             self.help_window.place(
-                relx=0.5,
-                rely=0.1,
+                relx = 0.5,
+                rely = 0.1,
                 relheight = 0.7,
                 relwidth = 0.75,
                 anchor=tk.N
             )
+            self.help_window.lift()
 
 
     def display_encoded_input(self):
