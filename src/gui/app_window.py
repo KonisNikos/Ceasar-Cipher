@@ -19,7 +19,8 @@ class AppWindow(tk.Tk):
 
         self.Toggles = [True, True, False, False]
         self.current_language = language.Language.ENGLISH
-
+        self.search_history = []
+        self.searchcount = 0
 
         super().__init__()
         self.title("Ceasar Cipher")
@@ -66,7 +67,6 @@ class AppWindow(tk.Tk):
         self.key_label = widgets.label(self.key_frame, key_label_text, padx = 5)
 
         self.key_entry = widgets.entry(self.key_frame,width = 8)
-
 
         self.buttons_frame = widgets.frame(self)
 
@@ -124,7 +124,6 @@ class AppWindow(tk.Tk):
 
         self.output_label.pack(side = tk.TOP, pady = 5)
         self.output_text.pack(side = tk.BOTTOM)
-        
 
         self.data_frame.pack()
 
@@ -198,7 +197,6 @@ class AppWindow(tk.Tk):
         self.custom_label.grid(row=0, column = 0, padx = 5)
         self.custom_entry = tk.Entry(self.custom_frame, width = 20)
 
-
         self.custom_entry = widgets.entry(
             self.custom_frame,
             width = 30,
@@ -266,16 +264,25 @@ class AppWindow(tk.Tk):
 
         self.update_toggle_colors()
 
+    def save_history(self, mode: str, Toggles: list, input_str: str, output="N/A", key_picked="N/A"):
+        self.searchcount += 1
+        Toggle_str = '['
+        for i in range(4):
+            if Toggles[i]:
+                Toggle_str += ['English, ', 'Greek, ', ' Symbols', 'Custom'][i]
+        Toggle_str = Toggle_str.strip(' ').strip(',') + ']'
+        self.search_history.append(f" {self.searchcount}) {mode}, Toggles: {Toggle_str}, Key: {key_picked}\nInput: {input_str}\n{output}")
+
     def open_history_window(self):
         history_window = tk.Toplevel(self)
-        history_window.title("Search History")
+        history_window.title("History")
         history_window.geometry("400x300")
         history_window.configure(bg=styles.BACKGROUND_COLOR)
         history_label = widgets.label(
-            history_window, text="Search History:", font=("Arial", 14, "bold")
+            history_window, text="History:", font=("Arial", 14, "bold")
         )
         history_label.pack(pady=10)
-        for item in core.search_history:
+        for item in self.search_history:
             item_label = widgets.label(history_window, text=item)
             item_label.pack(pady=2)
         close_button = widgets.button(
@@ -291,6 +298,7 @@ class AppWindow(tk.Tk):
     def get_key(self):
         return int(self.key_entry.get())
 
+
     def switch_language(self):
         if self.current_language == language.Language.ENGLISH:
             self.current_language = language.Language.GREEK
@@ -300,7 +308,8 @@ class AppWindow(tk.Tk):
         for child in self.get_children(self, [tk.Button, tk.Label]):
             child.language = self.current_language
             child.event_generate("<<onLanguageChange>>")
-            
+
+
     @staticmethod
     def get_children(parent, filters):
         children = []
@@ -317,7 +326,6 @@ class AppWindow(tk.Tk):
         return self.custom_entry.get()
 
 
-
     def update_toggles(self, index): 
         if self.Toggles[index] == True:
             self.Toggles[index] = False
@@ -330,8 +338,8 @@ class AppWindow(tk.Tk):
         else:
             self.Toggles[3] = False
 
-
         self.update_toggle_colors()
+
 
     def update_toggle_colors(self):
         default_color = styles.BACKGROUND_COLOR
@@ -370,6 +378,7 @@ class AppWindow(tk.Tk):
         characters = self.get_custom()
         encoded_text = core.encode(input_text, key, self.Toggles, characters)
 
+        self.save_history('Encode', self.Toggles, input_text, 'Output: ' + encoded_text, key)
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert("1.0", encoded_text)
@@ -382,17 +391,19 @@ class AppWindow(tk.Tk):
         characters = self.get_custom()
         decoded_text = core.decode(input_text, key, self.Toggles, characters)
 
-
+        self.save_history('Decode', self.Toggles, input_text, 'Output: ' + decoded_text, key)
         self.output_text.config(state=tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert("1.0", decoded_text)
         self.output_text.config(state=tk.DISABLED)
+
 
     def display_bruteforce_input(self):
         input_text = self.get_input()
         characters = self.get_custom()
         decrypted_messages = core.BruteForce(input_text, self.Toggles, characters)
 
+        self.save_history('Brute Force', self.Toggles, input_text, 'Output: (Too many results to show.)')
         self.output_text.config(state = tk.NORMAL)
         self.output_text.delete("1.0", tk.END)
         for decrypted_message in decrypted_messages:
@@ -401,7 +412,6 @@ class AppWindow(tk.Tk):
                 f"key = {decrypted_messages[decrypted_message]} : {decrypted_message}"
             )
             self.output_text.insert(tk.END, "\n")
-
         self.output_text.config(state=tk.DISABLED)
 
 
@@ -410,8 +420,8 @@ class AppWindow(tk.Tk):
         characters = self.get_custom()
         decrypted_messages = core.AutoDecrypt(input_text, self.Toggles, characters)
 
+        self.save_history('AutoDecrypt', self.Toggles, input_text, 'Top result: ' + decrypted_messages[0][1])
         self.output_text.config(state=tk.NORMAL)
-
         self.output_text.delete("1.0", tk.END)
         for decrypted_message in decrypted_messages:
             self.output_text.insert(

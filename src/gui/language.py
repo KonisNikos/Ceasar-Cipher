@@ -46,7 +46,7 @@ TEXTS = {
         Language.GREEK: "Σύμβολα" 
     },
     "CUSTOM_TOGGLE": {
-        Language.ENGLISH: "Custon",
+        Language.ENGLISH: "Custom",
         Language.GREEK: "Προσαρμοσμένο"
     },
     "CUSTOM_LABEL": {

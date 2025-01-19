@@ -1,9 +1,3 @@
-search_history=[]
-searchcount=0
-DecryptPicked= False
-AutoPicked= False
-BrutePicked=False
-
 english_str = 'abcdefghijklmnopqrstuvwxyz'
 english_dict = {'a': 0 , 'b': 1 , 'c': 2 , 'd': 3 , 'e': 4 , 'f': 5 , 'g': 6 , 'h': 7 , 'i': 8 ,
                 'j': 9 , 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17,
@@ -28,27 +22,7 @@ symbol_dict = {'~': 0 , '`': 1 , '!': 2 , '1': 3 , '@': 4 , '2': 5 , '#': 6 , '3
                ']': 30, '|': 31, ':': 32, ';': 33, '"': 34, "'": 35, '<': 36, ',': 37, '>': 38, '.': 39, '?': 40, '/': 41, ' ': 42}
 
 
-def save_history(mode: str, inputtxt: str, result="N/A", keypicked="N/A"):
-    global searchcount
-    global search_history
-    global DecryptPicked
-    global AutoPicked
-    global BrutePicked
-    searchcount+=1
-    if DecryptPicked==True:
-      search_history.append(f" {searchcount})Decrypted:'{inputtxt}',key:'{keypicked}',result:'{result}'")
-      DecryptPicked=False
-    elif DecryptPicked==False:
-         search_history.append(f"{searchcount}){mode}:'{inputtxt}',key:'{keypicked}',result:'{result}'")
-
-    AutoPicked=False   
-    BrutePicked=False
-
-
 def encode(plain_text: str, key: int, Toggles: list, characters = ''):
-    global DecryptPicked
-    global AutoPicked
-    global BrutePicked
 
     if not isinstance(plain_text, str):
         raise TypeError(f"Expected a str, got {type(plain_text).__name__}")
@@ -99,26 +73,15 @@ def encode(plain_text: str, key: int, Toggles: list, characters = ''):
         else:
             cipher_text += i
 
-    if AutoPicked==False and BrutePicked==False:
-        save_history("Encrypted",plain_text,cipher_text,key)
-
     return cipher_text
 
 
 def decode(cipher_text: str, key: int, Toggles: list, characters = ''):
-    global DecryptPicked
-    global AutoPicked
-    global BrutePicked
-    if AutoPicked==False and BrutePicked==False:
-        DecryptPicked= True
 
     return encode(cipher_text, -key, Toggles, characters)
 
 
 def BruteForce(cipher_text: str, Toggles: list, characters = ''):
-    global BrutePicked
-    if AutoPicked==False:
-        BrutePicked=True
 
     if not isinstance(Toggles, list):
         raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
@@ -147,10 +110,6 @@ def BruteForce(cipher_text: str, Toggles: list, characters = ''):
             str_key = str(key)
         PossibleDecryptions.setdefault(decode(cipher_text, key, Toggles, characters), str_key)
 
-
-    if BrutePicked==True and AutoPicked==False:
-        save_history("BruteForce Decrypted",cipher_text)
-        
     return PossibleDecryptions
 
 
@@ -182,8 +141,6 @@ def QuickSort(List: list):
 
 
 def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
-    global AutoPicked
-    AutoPicked=True
 
     if not isinstance(Toggles, list):
         raise TypeError(f"Expected a list, got {type(Toggles).__name__}")
@@ -193,8 +150,7 @@ def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
         if not isinstance(i, bool):
             raise TypeError(f"Expected a bool, got {type(i).__name__}")
 
-    EngToggles = [Toggles[0], False, False, Toggles[3]]
-    PossibleDecryptions = BruteForce(cipher_text, EngToggles, characters)
+    PossibleDecryptions = BruteForce(cipher_text, Toggles, characters)
     DecryptionList = []
 
     for decrypted_message in PossibleDecryptions:
@@ -218,8 +174,5 @@ def AutoDecrypt(cipher_text: str, Toggles: list, characters = ''):
         DecryptionList.append({0:key, 1:decrypted_message, 2:points})
 
     SortedList = QuickSort(DecryptionList)
-
-    if AutoPicked==True:
-        save_history("AutoDecrypted",cipher_text,SortedList[0][1])
 
     return SortedList
