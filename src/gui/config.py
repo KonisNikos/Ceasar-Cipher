@@ -1,4 +1,5 @@
 HELP_MESSAGE = """Welcome to the Caesar Cipher app!\n
+Change between English and Greek from the button on the top left
 Use the input panel to enter text.
 Use Encode, Decode, Brute Force or AutoDecrypt to process your text.
 !!! Make sure to choose a key when using Encode or Decode."
@@ -15,10 +16,11 @@ AutoDecrypt:
 Outputs all possible decryptions from most likely to least.
 !!! Only works for decryption of coherent English words. Use with English or Custom toggles.
 Results may not be perfect if the given text is too short.
-May also provide accurate results for non-English text, using the basic Latin alphabet though not as reliably. (French, German, Spanish etc.)\n
+May also provide accurate results for non-English text, using the basic Latin alphabet though not as
+reliably. (French, German, Spanish etc.)\n
 Symbols:
 Cycles through the string:
-`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/
+`!1@2#3$4€%5^6&7*8(9)0_-+={[}]|:;"'<,>.?/ 
 (there is a space in the end.)\n
 Custom:
 Input a string of characters to cycle through.
