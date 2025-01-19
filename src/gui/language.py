@@ -60,6 +60,10 @@ TEXTS = {
     "HISTORY": {
         Language.ENGLISH: "History",
         Language.GREEK: "Ιστορία"
+    },
+    "CLOSE": {
+        Language.ENGLISH: "Close",
+        Language.GREEK: "κλείσε"
     }
 }
 class Text():
