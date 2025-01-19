@@ -63,7 +63,7 @@ TEXTS = {
     },
     "CLOSE": {
         Language.ENGLISH: "Close",
-        Language.GREEK: "κλείσε"
+        Language.GREEK: "Κλείσε"
     }
 }
 class Text():
