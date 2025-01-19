@@ -274,21 +274,45 @@ class AppWindow(tk.Tk):
         self.search_history.append(f" {self.searchcount}) {mode}, Toggles: {Toggle_str}, Key: {key_picked}\nInput: {input_str}\n{output}")
 
     def open_history_window(self):
-        history_window = tk.Toplevel(self)
-        history_window.title("History")
-        history_window.geometry("400x300")
-        history_window.configure(bg=styles.BACKGROUND_COLOR)
-        history_label = widgets.label(
-            history_window, text="History:", font=("Arial", 14, "bold")
-        )
-        history_label.pack(pady=10)
-        for item in self.search_history:
-            item_label = widgets.label(history_window, text=item)
-            item_label.pack(pady=2)
-        close_button = widgets.button(
-            history_window, text="Close", command = history_window.destroy, width=10
-        )
-        close_button.pack(pady=10)
+     history_window = tk.Toplevel(self)
+     history_window.title("History")
+     history_window.geometry("400x300")
+     history_window.configure(bg=styles.BACKGROUND_COLOR)
+
+     history_label = widgets.label(
+        history_window, text=language.Text(
+            language.TEXTS["HISTORY"], self.current_language
+        ), font=("Arial", 14, "bold")
+      )
+     history_label.pack(pady=10)
+
+     frame = tk.Frame(history_window, bg=styles.BACKGROUND_COLOR)
+     frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+     canvas = tk.Canvas(frame, bg=styles.BACKGROUND_COLOR)
+     canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+     scrollbar = tk.Scrollbar(frame, orient=tk.VERTICAL, command=canvas.yview)
+     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+     canvas.configure(yscrollcommand=scrollbar.set)
+
+     items_frame = tk.Frame(canvas, bg=styles.BACKGROUND_COLOR)
+
+     canvas.create_window((0, 0), window=items_frame, anchor="nw")
+     for item in self.search_history:
+        item_label = widgets.label(items_frame, text=item)
+        item_label.pack(pady=2)
+
+     items_frame.update_idletasks()
+     canvas.config(scrollregion=canvas.bbox("all"))
+
+     close_button = widgets.button(
+        history_window, text=language.Text(
+            language.TEXTS["CLOSE"], self.current_language
+        ), command=history_window.destroy, width=10
+     )
+     close_button.pack(pady=10)
 
 
     def get_input(self):
